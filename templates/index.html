@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='player_container.css') }}"
+    />
+    <title>Easy NBA</title>
+  </head>
+  <body>
+    <div class="body">
+      <header>
+        <div class="title">Easy-NBA</div>
+        <nav>
+          <ul class="navlist">
+            <li><a href="#">About</a></li>
+            <li><a href="#">How To</a></li>
+            <li><a href="#">Social</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <main class="gradient center">
+        <h1>Enter an NBA player to start!</h1>
+        <p>
+          Please use their common names and include punctuation when necessary.
+          <br>
+          Ex: 'Magic Johnson', 'shaQUILLE O'neal' are both valid but...
+          'Earvin Johnson' and 'shaquille oneal' are not.
+          <br>
+          <br>
+          Please allow up to 5 seconds for results :)
+        </p>
+        <form action="/" method="post">
+          <input
+            type="text"
+            placeholder="Enter player"
+            name="player"
+            required
+          />
+          <button type="submit">Search</button>
+        </form>
+        {% if player and reg and playoffs %}
+        {% if player_info %}
+        {% set player = player_info["player_name"] %}
+        <div class="player-container">
+          <div class="heading">Player Info</div>
+          <div class="sides">
+            <div class="left">
+              <img src="{{player_info['img_link']}}" alt="NBA Player">
+              <div class="info">
+                <b>{{player}}</b>
+                <p>5 times champ</p>
+                <p><b>POS: </b>{{player_info["position"]}}</p>
+                <p class="max-width"><b>Primary Teams: <br></b>{{player_info["teams"]}}</p>
+              </div>
+            </div>
+            <div class="right">
+              des
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        <h2>{{player}}'s Stats</h2>
+        <div class="scroll center">{{ reg | safe }}</div>
+        <h2>Playoff Stats</h2>
+        <div class="scroll center last">{{ playoffs | safe }}</div>
+        {% else %}
+        <p>player not found, sorry!</p>
+        {% endif %}
+      </main>
+
+      <footer>
+        <p>Made by Zohair Syed - Currently in Development</p>
+      </footer>
+    </div>
+  </body>
+</html>
