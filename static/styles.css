@@ -103,24 +103,43 @@ p {
 
 .data {
     border-collapse: collapse;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     max-width: 80%;
+    overflow: hidden;
+    border-radius: 10px 10px 0 0;
+    margin-bottom: 2em;
+}
+
+.data thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
 }
 
 .data th, .data tr {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: left;
-    padding: 2px 18px;
+    padding: 5px 20px;
     text-align: center;
-    background-color: #cceaff;
-    /* transition: 0.05s background-color ease-in; */
 }
 
-.data th {
-    background-color: #45aeda;
+.data tbody tr {
+    border-bottom: 1px solid #dddddd;
 }
 
-.data tr:hover {
-    background-color: #a3d0ef;
+.data tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.data tbody tr:nth-of-type(odd) {
+    background-color: rgb(218, 223, 224);
+}
+
+.data tbody tr:last-of-type {
+    border-bottom: 4px #009879 solid;
+}
+
+.data tbody tr:hover {
+    background-color: #93dbcd;
 }
 
 .scroll {

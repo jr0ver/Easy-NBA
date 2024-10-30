@@ -19,26 +19,28 @@
 .sides {
     display: flex;
     column-gap: 1em;
-    align-items: center;
+    align-items: flex-start;
     padding: 1em 2em;
     background-color: #cceaff;
+    /* width: 100%; */
 }
 
+
 .left, .right {
+    flex-wrap: wrap;
     align-items: center;
     display: flex;
     flex-direction: column;
 }
 
-.left img {
-    margin: 1em;
-}
-
 .info {
+    padding: 1em;
     margin-bottom: 1em;
     display: flex;
     align-items: center;
     flex-direction: column;
+    background-color: white;
+    border-radius: 5%;
 }
 
 .info p {
@@ -49,11 +51,23 @@
     height: 250px;
     width: auto;
     border-radius: 5%;
+    margin: 1em;
 }
 
-/* .max-width {
-    max-width: 75%;
-} */
+
+.right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+}
+
+.awards, .more-info {
+    background-color: white;
+    margin-bottom: 1em;
+    width: 100%;
+}
+
 
 .wrap {
     text-wrap: wrap;
