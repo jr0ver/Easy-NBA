@@ -3,9 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 from bs4 import BeautifulSoup
 import matplotlib
-from bball_ref import *
-from land_of_bball import *
-from data_retrieval import *
+
+from BasketballReference import BasketballReference
+from data_retrieval import PlayerInfo
 
 # Basic configurations
 matplotlib.use("Agg")  # Use Agg backend (non-interactive)
@@ -15,7 +15,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
 db = SQLAlchemy(app)
 
 
-# SQL TABLES
+# SQLite TABLES
 class Player(db.Model):
     __tablename__ = "player"
     id = db.Column(db.Integer, primary_key=True)
@@ -72,30 +72,40 @@ def home():
     player_info = None
 
     if request.method == "POST":
-        player = request.form["player"]
-        player = player.title()
+        player_input = request.form["player"].title()
         try:
-            player_cleaned = player.replace("'", "").lower().split()
+            player_cleaned = player_input.replace("'", "").lower().split()
             player_cleaned = player_cleaned[0] + "_" + player_cleaned[1]
 
-            url = (
-                "https://www.landofbasketball.com/nba_players/"
-                + player_cleaned
-                + ".htm"
-            )
-            data = pd.read_html(url)
+            # url = (
+            #     "https://www.landofbasketball.com/nba_players/"
+            #     + player_cleaned
+            #     + ".htm"
+            # )
+            # data = pd.read_html(url)
 
-            # obtain the regular season, playoffs, and additional information
-            [reg, playoffs] = get_tables(data)
-            player_info = get_player_info(player, reg)
+            # # obtain the regular season, playoffs, and additional information
+            # [reg, playoffs] = get_tables(data)
 
+            # player = BasketballReference(player_input)
+            # reg = clean_table(player.get_regular_season_stats())
+            # playoffs = clean_table(player.get_playoff_stats())
+            
+            player_raw = BasketballReference(player_input)
+            player = PlayerInfo(player_raw)
+            reg = player.reg
+            playoffs = player.post
+            player_info = player.get_player_info()
+            # print(reg)
         except Exception as e:
             print("Sorry, the player couldn't be found", e)
+    
+    
     return render_template(
         "index.html",
         reg=reg.to_html(classes="data") if reg is not None else None,
         playoffs=playoffs.to_html(classes="data") if playoffs is not None else None,
-        player=player,
+        player=player_input,
         player_info=player_info,
     )
 

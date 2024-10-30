@@ -1,72 +1,47 @@
 import pandas as pd
 from bs4 import BeautifulSoup
-import matplotlib
-from bball_ref import *
-from land_of_bball import *
-
-def convert_type(df: pd.DataFrame) -> pd.DataFrame:
-    numerical_columns = ["Games", "Points", "Rebounds", "Assists", "Steals", "Blocks"]
-    for col in numerical_columns:
-        df[col] = pd.to_numeric(df[col], errors="coerce")
-    return df
+from BasketballReference import BasketballReference
+from data_cleaning import clean_table
 
 
-def get_tables(data: pd.Series) -> tuple:
-    reg = data[len(data) - 2]
-    playoffs = data[len(data) - 1]
-    column_names = [
-        "Season",
-        "Team",
-        "Games",
-        "Points",
-        "Rebounds",
-        "Assists",
-        "Steals",
-        "Blocks",
-        "NaN",
-    ]
+class PlayerInfo:
+    def __init__(self, player_ref: BasketballReference):
+        self.player_ref = player_ref
+        self.reg = clean_table(self.player_ref.get_regular_season_stats())
+        self.post = clean_table(self.player_ref.get_playoff_stats())
 
-    tables = {"reg": reg, "playoffs": playoffs}
+    # def get_primary_teams(self):
+    #     teams = (self.reg['Team'] != "-")['Team'].value_counts()
+    #     print(teams)
 
-    # loop over the two tables to clean the raw data
-    for name, df in tables.items():
-        df.columns = column_names
-        df = df.drop(0).drop("NaN", axis=1)
-        df = df.reset_index(drop=True)
-        df.index += 1
-        tables[name] = df
+    def get_teams(self):
+        relevant_rows = self.reg.iloc[: self.reg.index.get_loc("TOT_1")]
+        teams = relevant_rows["Team"].value_counts().index.tolist()
 
-    reg = convert_type(tables["reg"])
-    playoffs = convert_type(tables["playoffs"])
+        if len(teams) > 3:
+            return teams[:3]
+        return teams
 
-    # career average value is NaN, this changes to season
+    def get_position(self):
+        relevant_rows = self.reg.iloc[: self.reg.index.get_loc("TOT_1")]
+        positions = relevant_rows["Pos"].value_counts()
 
-    if pd.isna(reg["Season"].iloc[-1]):
-        reg.loc[reg.index[-1], "Season"] = "Career"
+        top_position = positions.index[0]
 
-    if pd.isna(playoffs["Season"].iloc[-1]):
-        playoffs.loc[playoffs.index[-1], "Season"] = "Career"
+        if len(positions) > 1 and positions.iloc[1] >= positions.iloc[0] * 0.33:
+            return [top_position, positions.index[1]]
+        return [top_position]
 
-    return reg, playoffs
-
-
-def get_player_info(player: str, reg: pd.DataFrame) -> dict[str]:
-    """Given a player, the function calls functions from the modules
-    land_of_bball.py and bbal_ref.py to sequentially obtain and produce
-    a dictionary of various player information
-    """
-    result = get_br_page(player)
-    soup = result[0]  # entire basketball reference page
-    player_name = result[1]  # player name
-    img_link = get_br_img(soup)
-    position = get_position(get_br_info(soup))
-
-    teams = find_top_teams(reg)
-    player_info = {
-        "player_name": player_name,
-        "img_link": img_link,
-        "position": position,
-        "teams": teams,
-    }
-    # show_graph(reg)
-    return player_info
+    def get_player_info(self) -> dict[str]:
+        """Given a player, the function calls functions from the modules
+        land_of_bball.py and bbal_ref.py to sequentially obtain and produce
+        a dictionary of various player information
+        """
+        player_info = {
+            "player_name": self.player_ref.name,
+            "img_link": self.player_ref.get_br_img(),
+            "position": self.get_position(),
+            "teams": self.get_teams(),
+        }
+        # show_graph(reg)
+        return player_info
