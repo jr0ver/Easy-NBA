@@ -44,11 +44,10 @@ def clean_table(df: pd.DataFrame) -> pd.DataFrame:
      
     df = convert_type(df)
 
-    columns_to_drop = ['Age', 'Lg', 'GS', 'FG%', '3P', '3PA', '3P%', '2P', '2PA', '2P%', 
+    columns_to_drop = ['Age', 'Lg', 'GS','MP', 'FGA', 'FG', 'FG%', '3P', '3PA', '3P%', '2P', '2PA', '2P%', 
                    'eFG%', 'FT', 'FTA', 'FT%', 'ORB', 'DRB', 'TOV', 'PF', 'Awards']
-    # Filter the list to include only those columns that exist in the DataFrame
+
     existing_columns_to_drop = [col for col in columns_to_drop if col in df.columns]
-    # Drop the existing columns
     df = df.drop(existing_columns_to_drop, axis=1)
 
     df = df.dropna(axis=0, how='all')
