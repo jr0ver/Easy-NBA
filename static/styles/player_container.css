@@ -54,7 +54,7 @@
     margin: 1em;
 }
 
-
+/* RIGHT SIDE */
 .right {
     flex: 1;
     display: flex;
@@ -63,7 +63,37 @@
 }
 
 .awards, .more-info {
-    background-color: white;
+    background-color: #f3f3f3;
     margin-bottom: 1em;
     width: 100%;
+    padding: 20px;
+}
+
+.awards {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+}
+
+.award {
+    background-color: #45aeda;
+    color: white;
+    padding: 0px 12px;
+    margin: 5px 2px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.award:hover {
+    transform: scale(1.05);
+    /* Slightly increase size on hover */
 }

@@ -100,13 +100,19 @@ def home():
         except Exception as e:
             print("Sorry, the player couldn't be found", e)
     
-    
+    awards = [
+        {"name": "MVP", "year": 2021},
+        {"name": "ROY", "year": 2022},
+        {"name": "DPOY", "year": 2020}
+    ]
+
     return render_template(
         "index.html",
         reg=reg.to_html(classes="data") if reg is not None else None,
         playoffs=playoffs.to_html(classes="data") if playoffs is not None else None,
         player=player_input,
         player_info=player_info,
+        awards=awards
     )
 
 

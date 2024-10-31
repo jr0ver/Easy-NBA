@@ -34,10 +34,14 @@ form button {
     transition: background-color 0.3s;
 }
 
-button:hover {
+form button:hover {
     background-color: #45aeda;
 }
 
 .wrap {
     text-wrap: wrap;
+}
+
+.round{
+    border-radius: 5px 5px;
 }

@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
         renderer: 'svg',
         loop: true,
         autoplay: true,
-        path: '/static/public/test.json'
+        path: '/static/public/light_stripes.json'
     });
     console.log("Background SVG loaded")
 });
