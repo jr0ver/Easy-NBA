@@ -1,6 +1,7 @@
 import pandas as pd
 from bs4 import BeautifulSoup
 from BasketballReference import BasketballReference
+from awards import format_all_league, get_all_league_list, get_awards_list, separate_all_league
 from data_cleaning import clean_table
 
 
@@ -31,17 +32,21 @@ class PlayerInfo:
         if len(positions) > 1 and positions.iloc[1] >= positions.iloc[0] * 0.33:
             return [top_position, positions.index[1]]
         return [top_position]
-
+    
     def get_player_info(self) -> dict[str]:
-        """Given a player, the function calls functions from the modules
-        land_of_bball.py and bbal_ref.py to sequentially obtain and produce
-        a dictionary of various player information
-        """
+        """arranges the player_info dictionary for the app_route"""
+
+        # awards require info from 2 places
+        awards = get_awards_list(self.player_ref.get_player_div())
+        extras = separate_all_league(get_all_league_list(self.player_ref.soup))
+        extras = format_all_league(extras)
+        awards.extend(extras)
+
         player_info = {
             "player_name": self.player_ref.name,
             "img_link": self.player_ref.get_br_img(),
             "position": self.get_position(),
             "teams": self.get_teams(),
+            "awards": awards
         }
-        # show_graph(reg)
         return player_info
