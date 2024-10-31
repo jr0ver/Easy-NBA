@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/player_container.css') }}" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.4/lottie.min.js"></script>
     <script src="{{ url_for('static', filename='js/lottie.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/awards.js') }}"></script>
+
     <title>Easy NBA</title>
 </head>
 <body>
@@ -56,8 +58,7 @@
                             </div>
                         </div>
                         <div class="right">
-                            <div class="awards">
-                                <p>yay</p>
+                            <div class="awards" data-awards='{{ awards|tojson|safe }}'>
                             </div>
                             <div class="more-info">
                                 <p>yay</p>

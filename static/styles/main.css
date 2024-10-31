@@ -96,8 +96,7 @@ main {
 #lottie {
     position: fixed;
     z-index: 0;
-    width: 100%; 
-    height: 100%;
+    width: 6000px; 
     top: 0; 
     left: 0; 
 }
