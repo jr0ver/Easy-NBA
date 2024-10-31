@@ -40,7 +40,8 @@ class PlayerInfo:
         awards = get_awards_list(self.player_ref.get_player_div())
         extras = separate_all_league(get_all_league_list(self.player_ref.soup))
         extras = format_all_league(extras)
-        awards.extend(extras)
+        if extras:
+            awards.extend(extras)
 
         player_info = {
             "player_name": self.player_ref.name,

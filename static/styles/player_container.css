@@ -1,27 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
 .player-container {
     display: flex;
     flex-direction: column;
     margin-top: 1.5em;
     width: 80%;
     max-width: 900px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .heading {
     background-color: #45aeda;
-    height: 2em;
+    height: em;
     text-align: center;
     font-weight: bold;
     font-size: large;
-    padding-top: 1em;
+    padding: 0.5em;
+    font-family: Poppins;
+    font-weight: bold;
+    font-size: 1.5em;
+    color: white;
 }
 
 .sides {
     display: flex;
     column-gap: 1em;
     align-items: flex-start;
-    padding: 1em 2em;
+    padding: 1em 1em;
     background-color: #cceaff;
+    flex-wrap: wrap;
+    justify-content: center;
     /* width: 100%; */
 }
 
@@ -65,8 +72,8 @@
 .awards, .more-info {
     background-color: #f3f3f3;
     margin-bottom: 1em;
-    width: 100%;
     padding: 20px;
+    width: 80%;
 }
 
 .awards {
@@ -82,7 +89,7 @@
     background-color: #45aeda;
     color: white;
     padding: 0px 10px;
-    margin: 4px 2px;
+    margin: 2px 2px;
     border-radius: 8px;
     font-size: 12px;
     cursor: pointer;

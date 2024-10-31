@@ -19,7 +19,7 @@ body {
 }
 
 header, footer {
-    background-color: #3494bd;
+    background-color: #45aeda;
     color: white;
     padding: 1em;
     font-family: Poppins;
@@ -71,6 +71,7 @@ main {
     background-color: #f2f2f2;
     flex: auto;
 }
+
 /* 
 .gradients {
     background: linear-gradient(45deg, #90c1d6, #432062, #90c1d6);
@@ -96,13 +97,13 @@ main {
 #lottie {
     position: fixed;
     z-index: 0;
-    width: 6000px; 
-    top: 0; 
-    left: 0; 
+    width: 5000px;
+    top: 0;
+    left: 0;
 }
 
 
-.content{
+.content {
     position: relative;
     z-index: 1;
 }
@@ -110,10 +111,15 @@ main {
 h1 {
     font-size: 3em;
     margin: 0.9em 0 0 0;
+    text-align: center;
+    font-family: Poppins;
+    font-weight: bold;
+    color:#133f79;
 }
 
-p {
+.content p {
     text-align: center;
+    font-family: Poppins;
 }
 
 .scroll {
@@ -130,4 +136,15 @@ p {
     justify-content: center;
     align-items: center;
     height: 100vh;
+}
+
+.stats-head {
+    text-align: center;
+    background-color: white;
+    width: 60%;
+    margin: 2em;
+    border-radius: 1.5em;
+    font-family: Poppins;
+    font-weight: bold;
+    color: #133f79;
 }

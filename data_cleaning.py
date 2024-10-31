@@ -34,7 +34,7 @@ def clean_aggregates(df: pd.DataFrame):
     
 def clean_fill(df: pd.DataFrame):
     df.replace(r"^Did not play.*", "-", regex=True, inplace=True)
-    df.fillna(-1, inplace=True)
+    df.fillna("-", inplace=True)
     df['G'] = df['G'].astype(int)
     
 def clean_table(df: pd.DataFrame) -> pd.DataFrame:

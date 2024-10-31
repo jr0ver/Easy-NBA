@@ -1,4 +1,5 @@
 form {
+    margin: 1em 0 0 0.5em;
     width: 40%;
     height: fit-content;
     padding: 20px;
@@ -43,5 +44,9 @@ form button:hover {
 }
 
 .round{
-    border-radius: 5px 5px;
+    border-radius: 1em;
+}
+.boxify {
+    border-radius: 1em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

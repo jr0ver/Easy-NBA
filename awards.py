@@ -1,8 +1,12 @@
 from bs4 import BeautifulSoup
 
 def format_all_league(counter: dict) -> list:
+    if counter is None:
+        return
     format = []
     for category, count in counter.items():
+        if 'Seeding' in category:
+            continue # weird edge case for all-seeding teams
         if '1st' in category:
             team_name = "First Team"
         elif '2nd' in category:
@@ -20,6 +24,10 @@ def format_all_league(counter: dict) -> list:
 
 def separate_all_league(soup: BeautifulSoup):
     # parses the HTML table for all-league info
+
+    if soup is None:
+        return
+    
     td_elements = soup.find_all('td', class_='single')
 
     league_counts = {}
