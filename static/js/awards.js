@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             //              </svg>`; // Example SVG (blue circle)
 
             const textElement = document.createElement('p');
-            textElement.innerText = `${award.name} (${award.year})`;
+            textElement.innerText = award;
             textElement.className = 'award-text';
 
             // banner.innerHTML = svg;

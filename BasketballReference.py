@@ -29,7 +29,6 @@ class BasketballReference:
             # first request (1/2)
             response = requests.get(new_url)
 
-            # to avoid unnecessary requests we will return this as well
             soup = BeautifulSoup(response.content, "html.parser")
 
             # for edge cases like 'DeMar DeRozan'
