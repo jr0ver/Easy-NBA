@@ -8,6 +8,10 @@ class Player(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False, unique=True)
 
+    reg_stats = db.relationship("RegularSeason", backref="player", lazy=True)
+    post_stats = db.relationship("PostSeason", backref="player", lazy=True)
+    player_info = db.relationship("PlayerInfo", uselist=False, lazy=True)
+
 class RegularSeason(db.Model):
     __tablename__ = "regular_season"
     id = db.Column(db.Integer, primary_key=True)
@@ -44,5 +48,14 @@ class PostSeason(db.Model):
         db.Index('ix_post_season_player_season', 'player_id', 'season'),
     )
 
-Player.reg_stats = db.relationship("RegularSeason", backref="player", lazy=True)
-Player.post_stats = db.relationship("PostSeason", backref="player", lazy=True)
+class PlayerInfo(db.Model):
+    __tablename__ = "player_info"
+    id = db.Column(db.Integer, primary_key=True)
+    player_id = db.Column(db.Integer, db.ForeignKey("player.id"), nullable=False)
+    link = db.Column(db.String(255), nullable=True)
+    positions = db.Column(db.String(255), nullable=True)
+    teams = db.Column(db.String(255), nullable=True)
+    awards = db.Column(db.String(255), nullable=True)
+    case_name = db.Column(db.String(100), nullable=True)
+
+    # Removed back reference since it's not needed

@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from bs4 import BeautifulSoup
 import matplotlib
 
-from database import add_player, convert_to_dataframe, get_player_data
+from database import add_player, convert_to_dataframe, get_player_data, get_player_info
 from models import db
 
 from BasketballReference import BasketballReference
@@ -27,19 +27,17 @@ def home():
     if request.method == "POST":
         player_input = request.form["player"].title()
         player_query = player_input.lower()
-        # print(player_query)
 
-        # checks if player is in the DB
         reg_query, playoffs_query = get_player_data(player_query)
 
-        # player already in DB
+        # player already in DB, READ
         if reg_query:
             print("Player is already in the database")
             # convert SQL data to DF
             reg, playoffs = convert_to_dataframe(reg_query, playoffs_query)
-            player_info = None # for now, must fix later
+            player_info = get_player_info(player_query)
         
-        # player not in DB
+        # player not in DB, WRITE
         else:
             print("Player is NEW")
             try:
@@ -53,7 +51,7 @@ def home():
                 playoffs = player.post
                 player_info = player.get_player_info()
 
-                add_player(player_query, reg, playoffs)
+                add_player(player_query, reg, playoffs, player_info)
             
             except Exception as e:
                 print("Sorry, the player couldn't be found", e)
