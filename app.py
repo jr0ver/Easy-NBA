@@ -3,6 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from bs4 import BeautifulSoup
 import matplotlib
 
+from database import add_player, convert_to_dataframe, get_player_data
+from models import db
+
 from BasketballReference import BasketballReference
 from data_retrieval import PlayerInfo
 
@@ -11,60 +14,10 @@ matplotlib.use("Agg")  # Use Agg backend (non-interactive)
 app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
-db = SQLAlchemy(app)
-
-
-# SQLite TABLES
-class Player(db.Model):
-    __tablename__ = "player"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200))
-    positions = db.Column(db.String(200), nullable=False)
-    teams = db.Column(db.String(1000), nullable=False)
-    championships = db.Column(db.Integer, nullable=False)
-    all_stars = db.Column(db.Integer, nullable=False)
-    all_nbas = db.Column(db.Integer, nullable=False)
-    seasons_played = db.Column(db.Integer, nullable=False)
-
-    reg_season = db.relationship("RegularSeason", backref="player")
-    playoffs = db.relationship("Playoffs", backref="player")
-
-    def __repr__(self):
-        return f"{self.name.title()} with ID:{self.id}"
-
-
-class RegularSeason(db.Model):
-    __tablename__ = "regular_season"
-    id = db.Column(db.Integer, primary_key=True)
-    player_id = db.Column(db.Integer, db.ForeignKey("player.id"), nullable=False)
-    season = db.Column(db.String(200), nullable=False)
-    team = db.Column(db.String(200), nullable=False)
-    games = db.Column(db.Integer, nullable=False)
-    points = db.Column(db.Float, nullable=False)
-    rebounds = db.Column(db.Float, nullable=False)
-    assists = db.Column(db.Float, nullable=False)
-    steals = db.Column(db.Float, nullable=False)
-    blocks = db.Column(db.Float, nullable=False)
-
-
-class Playoffs(db.Model):
-    __tablename__ = "playoffs"
-    id = db.Column(db.Integer, primary_key=True)
-    player_id = db.Column(db.Integer, db.ForeignKey("player.id"), nullable=False)
-    season = db.Column(db.String(200), nullable=False)
-    team = db.Column(db.String(200), nullable=False)
-    games = db.Column(db.Integer, nullable=False)
-    points = db.Column(db.Float, nullable=False)
-    rebounds = db.Column(db.Float, nullable=False)
-    assists = db.Column(db.Float, nullable=False)
-    steals = db.Column(db.Float, nullable=False)
-    blocks = db.Column(db.Float, nullable=False)
-
+db.init_app(app)
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-    db.create_all()
-    db.session.commit()
     player = None
     reg = None
     playoffs = None
@@ -73,19 +26,37 @@ def home():
 
     if request.method == "POST":
         player_input = request.form["player"].title()
-        try:
-            player_cleaned = player_input.replace("'", "").lower().split()
-            player_cleaned = player_cleaned[0] + "_" + player_cleaned[1]
-            
-            player_raw = BasketballReference(player_input)
-            player = PlayerInfo(player_raw)
-            reg = player.reg
-            playoffs = player.post
-            player_info = player.get_player_info()
-            # print(reg)
+        player_query = player_input.lower()
+        # print(player_query)
 
-        except Exception as e:
-            print("Sorry, the player couldn't be found", e)
+        # checks if player is in the DB
+        reg_query, playoffs_query = get_player_data(player_query)
+
+        # player already in DB
+        if reg_query:
+            print("Player is already in the database")
+            # convert SQL data to DF
+            reg, playoffs = convert_to_dataframe(reg_query, playoffs_query)
+            player_info = None # for now, must fix later
+        
+        # player not in DB
+        else:
+            print("Player is NEW")
+            try:
+                # since player is not in DB, need to scrape data
+                player_cleaned = player_input.replace("'", "").lower().split()
+                player_cleaned = player_cleaned[0] + "_" + player_cleaned[1]
+                
+                player_raw = BasketballReference(player_input)
+                player = PlayerInfo(player_raw)
+                reg = player.reg
+                playoffs = player.post
+                player_info = player.get_player_info()
+
+                add_player(player_query, reg, playoffs)
+            
+            except Exception as e:
+                print("Sorry, the player couldn't be found", e)
     
     return render_template(
         "index.html",
@@ -97,4 +68,6 @@ def home():
 
 
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)

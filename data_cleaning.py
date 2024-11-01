@@ -10,11 +10,19 @@ def convert_type(df):
     for col in numerical_columns:
         if col in df.columns:  # check if the column exists
             df[col] = pd.to_numeric(df[col], errors="coerce")
+
+    if "STL" not in df.columns:
+        df["STL"] = -1
+    if "BLK" not in df.columns:
+        df["BLK"] = -1
+
+    # df.fillna(-1, inplace=True)  # ensure no NaN values remain in numeric columns
+
     return df
 
 def clean_aggregates(df: pd.DataFrame):
     # create boolean Series
-    has_yrs = df['Season'].str.contains('Yr', case=False)
+    has_yrs = df['Season'].str.contains('Yr', case=False, na=False)
     yrs_indices = df[has_yrs].index.tolist()
     agg_count = 1
 
@@ -34,8 +42,8 @@ def clean_aggregates(df: pd.DataFrame):
     
 def clean_fill(df: pd.DataFrame):
     df.replace(r"^Did not play.*", "-", regex=True, inplace=True)
-    df.fillna("-", inplace=True)
-    df['G'] = df['G'].astype(int)
+    df.fillna(-1, inplace=True) # need to fix later
+    df['G'] = df['G'].astype(int) # need to fix later
     
 def clean_table(df: pd.DataFrame) -> pd.DataFrame:
 
@@ -43,15 +51,17 @@ def clean_table(df: pd.DataFrame) -> pd.DataFrame:
         return df # must fix later
      
     df = convert_type(df)
-
     columns_to_drop = ['Age', 'Lg', 'GS','MP', 'FGA', 'FG', 'FG%', '3P', '3PA', '3P%', '2P', '2PA', '2P%', 
                    'eFG%', 'FT', 'FTA', 'FT%', 'ORB', 'DRB', 'TOV', 'PF', 'Awards']
 
     existing_columns_to_drop = [col for col in columns_to_drop if col in df.columns]
     df = df.drop(existing_columns_to_drop, axis=1)
-
+    
+    # fixing NaN values and changing indices
+    df.replace(-1, np.nan, inplace=True)
     df = df.dropna(axis=0, how='all')
     df.index = range(1, len(df) + 1)
     clean_aggregates(df)
     clean_fill(df)
+
     return df
