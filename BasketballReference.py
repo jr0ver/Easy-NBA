@@ -9,6 +9,9 @@ class BasketballReference:
         self.name = name
         self.url, self.soup = self.get_br_page(name)  # get URL and soup together
 
+    def set_name(self, str):
+        self.name = str
+
     def get_br_page(self, player: str) -> tuple:
         """Returns the link to the basketball reference of the player and a BeautifulSoup object."""
         if not player:
@@ -35,8 +38,12 @@ class BasketballReference:
             regex = re.compile(player, re.IGNORECASE)
             player_link = soup.find("a", string=regex)
 
+            self.set_name(player_link.get_text())
+            # print(player_link.get_text())
+
             if player_link:
                 player_url = BR_TEMPLATE + player_link["href"] + "/"
+                    
                 # fetch and parse the player's page (2/2 requests)
                 player_response = requests.get(player_url)
                 player_soup = BeautifulSoup(player_response.content, 'html.parser')
