@@ -64,4 +64,7 @@ def clean_table(df: pd.DataFrame) -> pd.DataFrame:
     clean_aggregates(df)
     clean_fill(df)
 
+    # print("REG:", df)
+    df = df[df['Pos'] != 'Pos']
+
     return df

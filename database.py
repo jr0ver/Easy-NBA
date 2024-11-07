@@ -83,8 +83,10 @@ def get_player_data(player_query):
     """Given a player name queries for it in the DB"""
     try:
         query = Player.query.filter_by(name=player_query).first()
+        # print("QUERY", query, player_query)
         if query:
             reg_query = RegularSeason.query.filter_by(player_id=query.id).all()
+            # print("reg", reg_query)
             playoffs_query = PostSeason.query.filter_by(player_id=query.id).all()
             return reg_query, playoffs_query
         return None, None
@@ -104,8 +106,8 @@ def adjust_read_df_index(df: pd.DataFrame):
     df.index = new_index
     return df
 
-def convert_to_dataframe(reg_query, playoffs_query):
-    """Converts SQL tables to viewable pandas DFs"""
+def convert_reg_to_df(reg_query):
+    """Converts regular season SQL table to viewable pandas DataFrame"""
     try:
         reg_data = [{
             'ID': season.id,
@@ -127,8 +129,15 @@ def convert_to_dataframe(reg_query, playoffs_query):
         reg_df.reset_index(drop=True, inplace=True)
         reg_df.drop(['ID'], axis=1, inplace=True)
 
-        # print("REGULAR SEASON DF:", reg_df)
+        return adjust_read_df_index(reg_df)
+    
+    except Exception as e:
+        print("Error converting regular season data to DataFrame:", e)
+        return None
 
+def convert_post_to_df(playoffs_query):
+    """Converts playoffs SQL table to viewable pandas DataFrame"""
+    try:
         if playoffs_query:
             playoffs_data = [{
                 'ID': playoff.id,
@@ -152,13 +161,12 @@ def convert_to_dataframe(reg_query, playoffs_query):
         else:
             playoffs_df = pd.DataFrame(columns=['Season', 'Team', 'Pos', 'G', 'PTS', 'TRB', 'AST', 'STL', 'BLK'])
 
-        # print("PLAYOFFS DF:", playoffs_df)
-
-        return adjust_read_df_index(reg_df), adjust_read_df_index(playoffs_df)
+        return adjust_read_df_index(playoffs_df)
     
     except Exception as e:
-        print("Error converting to DataFrame:", e)
-        return None, None
+        print("Error converting playoffs data to DataFrame:", e)
+        return None
+
     
 def get_player_info(player_query: str) -> dict:
     query = Player.query.filter_by(name=player_query).first()
