@@ -78,21 +78,31 @@ def add_player_info(player_id: int, info: dict) -> None:
 
     db.session.add(player_info)
 
-
-def get_player_data(player_query):
-    """Given a player name queries for it in the DB"""
+def get_player_object(player_query: str):
+    """Given a player name, fxn queries for player in the DB""" 
     try:
-        query = Player.query.filter_by(name=player_query).first()
-        # print("QUERY", query, player_query)
-        if query:
-            reg_query = RegularSeason.query.filter_by(player_id=query.id).all()
-            # print("reg", reg_query)
-            playoffs_query = PostSeason.query.filter_by(player_id=query.id).all()
-            return reg_query, playoffs_query
-        return None, None
+        player = Player.query.filter_by(name=player_query).first()
+        if player:
+            return player
+        return None
+    
     except Exception as e:
         print("Error retrieving player data:", e)
+        return None
+
+def get_player_tables(player_sql):
+    """Given a player name, fxn queries for it in the DB"""
+    if player_sql is None:
         return None, None
+    
+    reg_query = RegularSeason.query.filter_by(player_id=player_sql.id).all()
+    playoffs_query = PostSeason.query.filter_by(player_id=player_sql.id).all()
+            
+    return reg_query, playoffs_query
+
+def get_player_name(id: int) -> str:
+    name = PlayerInfo.query.filter_by(player_id=id).first().case_name
+    return name
 
 def adjust_read_df_index(df: pd.DataFrame):
     if df is None or df.empty:
@@ -183,3 +193,12 @@ def get_player_info(player_query: str) -> dict:
         }
 
     return player_info_dict
+
+def query_all_players():
+    """Queries all players from the database."""
+    try:
+        all_players = Player.query.all()
+        return all_players
+    except Exception as e:
+        print("Error retrieving all players:", e)
+        return None
