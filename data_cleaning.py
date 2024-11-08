@@ -68,3 +68,11 @@ def clean_table(df: pd.DataFrame) -> pd.DataFrame:
     df = df[df['Pos'] != 'Pos']
 
     return df
+
+def front_end_clean(df: pd.DataFrame) -> pd.DataFrame:
+    df.replace("-1", '-', inplace=True)
+    df.replace(-1, '-', inplace=True)
+
+    return df
+
+        

@@ -71,9 +71,17 @@ def closest_player_KNN(scaled_df, player_id):
     return closest_player
 
 def get_closest_player(id: int) -> str:
-    """Returns the closest player name to player with given id"""
-    scaled = scale_data(create_master_table())
-    closest = closest_player_KNN(scaled, id)
-    closest_name = get_player_name(closest)
-
-    return closest_name
+    """Returns the closest player name to player with given id."""
+    try:
+        scaled = scale_data(create_master_table())
+        closest = closest_player_KNN(scaled, id)
+        closest_name = get_player_name(closest)
+        return closest_name
+    
+    # sometimes KNN function returns value error, fix later
+    except ValueError as e:
+        print(f"ValueError: {e}")
+        return "Error: Could not find closest player."
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return "Error: An unexpected issue occurred."

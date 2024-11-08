@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from bs4 import BeautifulSoup
 import matplotlib
 
+from data_cleaning import front_end_clean
 from database import add_player, convert_reg_to_df, convert_post_to_df, get_player_info, get_player_object, get_player_tables
 from models import db
 
@@ -24,6 +25,7 @@ def home():
     playoffs = None
     player_info = None
     user_input=None
+    closest_player = None
 
     if request.method == "POST":
         user_input = request.form["player"].title()
@@ -37,6 +39,7 @@ def home():
 
             reg_query, playoffs_query = get_player_tables(player_obj)
             reg, playoffs = convert_reg_to_df(reg_query), convert_post_to_df(playoffs_query)
+            reg, playoffs = front_end_clean(reg), front_end_clean(playoffs)
             player_info = get_player_info(player_lower)
 
         # player not in DB, WRITE
@@ -49,8 +52,10 @@ def home():
                 
                 player_raw = BasketballReference(user_input)
                 player = PlayerInfo(player_raw)
-                reg = player.reg
-                playoffs = player.post
+                
+                reg, playoffs = player.reg, player.post
+                reg, playoffs = front_end_clean(reg), front_end_clean(playoffs)
+
                 player_info = player.get_player_info()
 
                 add_player(player_lower, reg, playoffs, player_info)
@@ -61,7 +66,7 @@ def home():
         
         # GET CLOSEST PLAYER - MIGRATE LATER
         if player_obj:
-            print("CLOSEST PLAYER:", get_closest_player(player_obj.id))
+                closest_player = get_closest_player(player_obj.id)
 
     return render_template(
         "index.html",
@@ -69,6 +74,7 @@ def home():
         playoffs=playoffs.to_html(classes="data") if playoffs is not None else None,
         player=user_input,
         player_info=player_info,
+        closest_player = closest_player
     )
 
 
