@@ -1,5 +1,11 @@
-from data_retrieval import PlayerInfo
-from models import db, Player, RegularSeason, PostSeason, PlayerInfo
+"""
+Module that contains all necessary database operations. Includes
+functions for reading, writing, updating, and reformatting queried
+data.
+"""
+
+from .data_retrieval import PlayerInfo
+from ..models.TableModels import db, Player, RegularSeason, PostSeason, PlayerInfo
 import pandas as pd
 
 def add_player(player_query, reg, playoffs, info: dict):

@@ -1,3 +1,8 @@
+"""
+Module with various utility functions for cleaning and reformatting
+given data.
+"""
+
 import numpy as np
 import pandas as pd
 from bs4 import BeautifulSoup

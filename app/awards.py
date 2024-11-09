@@ -1,3 +1,8 @@
+"""
+Module for parsing raw HTML data and extracting relevant
+awards information.
+"""
+
 from bs4 import BeautifulSoup
 
 def format_all_league(counter: dict) -> list:
@@ -48,7 +53,7 @@ def get_all_league_list(soup: BeautifulSoup) -> BeautifulSoup:
     if soup is None:
         return []
     
-    #div = soup.find('ul', id="leaderboard_all_league")
+    # div = soup.find('ul', id="leaderboard_all_league")
     """for some reason BeautifulSoup cannot find the div with
     id='leaderboard_all_league, this is probably a BeautifulSoup error.
     Alternatively, we manually via string methods"""
@@ -71,7 +76,7 @@ def get_awards_list(soup: BeautifulSoup) -> list:
     ul = soup.find('ul', id="bling")
 
     if ul is None:
-        return ["No awards"]
+        return ["Awards N/A"]
     
     awards = []
     for li in ul.find_all('li'):

@@ -1,8 +1,13 @@
+"""
+Module retrieves the various scraped data and packages it into
+a PlayerInfo object.
+"""
+
 import pandas as pd
 from bs4 import BeautifulSoup
-from BasketballReference import BasketballReference
-from awards import format_all_league, get_all_league_list, get_awards_list, separate_all_league
-from data_cleaning import clean_table
+from ..models.BasketballReference import BasketballReference
+from ..awards import format_all_league, get_all_league_list, get_awards_list, separate_all_league
+from ..data_cleaning import clean_table
 
 
 class PlayerInfo:

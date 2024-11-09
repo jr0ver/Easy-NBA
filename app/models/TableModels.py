@@ -1,3 +1,8 @@
+"""
+Contains the SQL relational tables for Player, RegularSeason,
+PostSeason and PlayerInfo objects.
+"""
+
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()

@@ -1,7 +1,12 @@
-from data_cleaning import front_end_clean
-from database import add_player, convert_reg_to_df, convert_post_to_df, get_player_info, get_player_object, get_player_tables
-from BasketballReference import BasketballReference
-from data_retrieval import PlayerInfo
+"""
+Module for handling player data when first initializing and
+using the app. Retrieves player information by calling functions
+from DB module and accessing various fields
+"""
+
+from .database.db_operations import add_player, convert_reg_to_df, convert_post_to_df, get_player_info, get_player_object, get_player_tables
+from .models.BasketballReference import BasketballReference
+from .database.data_retrieval import PlayerInfo
 # from similarity import get_closest_player
 
 def handle_player_data(user_input):

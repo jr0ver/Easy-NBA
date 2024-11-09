@@ -1,7 +1,12 @@
+"""
+Module contains machine learning functions to determine
+similarity. Hosts a KNN model to find closest players.
+"""
+
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import NearestNeighbors
 import pandas as pd
-from database import get_player_info, get_player_name, query_all_players
+from .database.db_operations import get_player_info, get_player_name, query_all_players
 
 def create_master_table():
     players = query_all_players()
