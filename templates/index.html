@@ -42,11 +42,11 @@
                     <input type="text" placeholder="Enter player" name="player" required />
                     <button type="submit">Search</button>
                 </form>
-                {% if player and reg and playoffs %}
+                {% if reg and playoffs %}
                 {% if player_info %}
                 {% set player = player_info["player_name"] %}
                 <div class="player-container boxify">
-                    <div class="heading">Player Info</div>
+                    <div class="heading">{{player_info["player_name"]}} - Player Info</div>
                     <div class="sides">
                         <div class="left">
                             <img src="{{player_info['img_link']}}" alt="NBA Player" />
@@ -60,7 +60,7 @@
                             <div class="awards round" data-awards='{{ player_info["awards"]|tojson|safe }}'>
                             </div>
                             <div class="more-info round">
-                                <p>yay</p>
+                                <p>Closest Player in DB: {{closest_player}}</p>
                             </div>
                         </div>
                     </div>
