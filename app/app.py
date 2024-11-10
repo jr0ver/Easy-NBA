@@ -2,7 +2,7 @@ from flask import Flask, jsonify, redirect, request, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
 import matplotlib
 
-from app.database.db_operations import delete_player_from_id, get_player_name
+from .database.db_operations import delete_player_from_id, get_player_name
 
 from .data_cleaning import front_end_clean
 from .handler import handle_player_data
@@ -19,7 +19,7 @@ db.init_app(app)
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-    reg = playoffs = player_info = user_input = player_obj = closest_player = None
+    reg = playoffs = player_info = user_input = closest_player = None
 
     reset_name = request.args.get('reset')
     

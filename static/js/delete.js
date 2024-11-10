@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const deleteButton = document.getElementById('delete-btn');
-    console.log("test");
-    console.log(deleteButton);
+    // console.log(deleteButton);
 
     if (deleteButton) {
         deleteButton.addEventListener('click', (event) => {

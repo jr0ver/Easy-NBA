@@ -63,4 +63,4 @@ class PlayerInfo(db.Model):
     awards = db.Column(db.String(255), nullable=True)
     case_name = db.Column(db.String(100), nullable=True)
 
-    # Removed back reference since it's not needed
+    # removed back reference since it's not needed

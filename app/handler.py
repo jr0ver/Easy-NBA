@@ -9,7 +9,7 @@ from .models.BasketballReference import BasketballReference
 from .database.data_retrieval import PlayerInfo
 # from similarity import get_closest_player
 
-def handle_player_data(user_input, force_requery=False):
+def handle_player_data(user_input):
     player_lower = user_input.lower()
     player_obj = get_player_object(player_lower)
 
@@ -21,7 +21,7 @@ def handle_player_data(user_input, force_requery=False):
         player_info = get_player_info(player_lower)
     
     # player not in DB, WRITE
-    elif not player_obj or force_requery:
+    elif not player_obj:
         try:
             player_cleaned = user_input.replace("'", "").lower().split()
             player_cleaned = player_cleaned[0] + "_" + player_cleaned[1]
@@ -35,8 +35,6 @@ def handle_player_data(user_input, force_requery=False):
                 add_player(player_lower, reg, playoffs, player_info)
                 player_obj = get_player_object(player_lower)
             
-            if force_requery:
-                print("Updating DB")
             
         except Exception as e:
             print("Sorry, the player couldn't be found:", e)
