@@ -208,3 +208,29 @@ def query_all_players():
     except Exception as e:
         print("Error retrieving all players:", e)
         return None
+    
+
+def delete_player_from_id(player_id: int) -> bool:
+    """
+    Deletes a player and all related records from the database.
+    """
+    try:
+        PlayerInfo.query.filter_by(player_id=player_id).delete()
+        RegularSeason.query.filter_by(player_id=player_id).delete()
+        PostSeason.query.filter_by(player_id=player_id).delete()
+        player = Player.query.filter_by(id=player_id).delete()
+        
+        db.session.commit()
+        
+        if player:
+            print(f"Successfully deleted player with ID {player_id} and all related data.")
+            return True
+        else:
+            print(f"No player found with ID {player_id}.")
+            return False
+
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error deleting player data: {e}")
+        return False
+

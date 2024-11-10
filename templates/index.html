@@ -10,6 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.4/lottie.min.js"></script>
     <script src="{{ url_for('static', filename='js/lottie.js') }}"></script>
     <script src="{{ url_for('static', filename='js/awards.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/delete.js') }}"></script>
+
 
     <title>Easy NBA</title>
 </head>
@@ -55,6 +57,7 @@
                                 <p><b>POS: </b>{{player_info["position"]}}</p>
                                 <p class="max-width"><b>Primary Teams: <br /></b>{{player_info["teams"]}}</p>
                             </div>
+                                <button class="test-btn" id='delete-btn' data-player-id='{{player_id}}'>Update Stats</button>
                         </div>
                         <div class="right">
                             <div class="awards round" data-awards='{{ player_info["awards"]|tojson|safe }}'>
