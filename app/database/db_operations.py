@@ -40,9 +40,9 @@ def add_regular_season_stats(player_id: int, reg) -> None:
             assists=reg.iloc[index]['AST'],
             steals=reg.iloc[index]['STL'],
             blocks=reg.iloc[index]['BLK'],
-            fg_percentage=reg.iloc[index]['FG%'], # new columns
-            three_point_percentage=reg.iloc[index]['3P%'],
-            ft_percentage=reg.iloc[index]['FT%'],
+            fg_percentage=(reg.iloc[index]['FG%']),  # Parse percentage
+            three_point_percentage=(reg.iloc[index]['3P%']),
+            ft_percentage=(reg.iloc[index]['FT%']),
             turnovers=reg.iloc[index]['TOV']
         )
         db.session.add(reg_season_entry)
@@ -62,9 +62,9 @@ def add_post_season_stats(player_id: int, playoffs) -> None:
             assists=playoffs.iloc[index]['AST'],
             steals=playoffs.iloc[index]['STL'],
             blocks=playoffs.iloc[index]['BLK'],
-            fg_percentage=playoffs.iloc[index]['FG%'], # new columns
-            three_point_percentage=playoffs.iloc[index]['3P%'],
-            ft_percentage=playoffs.iloc[index]['FT%'],
+            fg_percentage=(playoffs.iloc[index]['FG%']),  # Parse percentage
+            three_point_percentage=(playoffs.iloc[index]['3P%']),
+            ft_percentage=(playoffs.iloc[index]['FT%']),
             turnovers=playoffs.iloc[index]['TOV']
         )
         db.session.add(post_season_entry)
@@ -146,7 +146,10 @@ def convert_reg_to_df(reg_query):
             'AST': season.assists,
             'STL': season.steals,
             'BLK': season.blocks,
-            'FG%': season.fg_percentage
+            'FG%': season.fg_percentage,
+            'FT%': season.ft_percentage,
+            '3P%': season.three_point_percentage,
+            'TOV': season.turnovers
         } for season in reg_query]
 
         reg_df = pd.DataFrame(reg_data)
@@ -177,7 +180,11 @@ def convert_post_to_df(playoffs_query):
                 'AST': playoff.assists,
                 'STL': playoff.steals,
                 'BLK': playoff.blocks,
-                'FG%': playoff.fg_percentage # currently set to None for incomplete data, fix later
+                'FG%': playoff.fg_percentage,
+                'FT%': playoff.ft_percentage,
+                '3P%': playoff.three_point_percentage,
+                'TOV': playoff.turnovers
+                 # currently set to None for incomplete data, fix later
             } for playoff in playoffs_query]
 
             playoffs_df = pd.DataFrame(playoffs_data)
@@ -202,13 +209,14 @@ def get_player_info(player_query: str) -> dict:
 
     if query:
         player_info = query.player_info
-        player_info_dict = {
-            'img_link': player_info.link,
-            'position': player_info.positions.split(', ') if player_info.positions else [],
-            'teams': player_info.teams.split(', ') if player_info.teams else [],
-            'awards': player_info.awards.split(', ') if player_info.awards else [],
-            'player_name': player_info.case_name
-        }
+        if player_info:
+            player_info_dict = {
+                'img_link': player_info.link,
+                'position': player_info.positions.split(', ') if player_info.positions else [],
+                'teams': player_info.teams.split(', ') if player_info.teams else [],
+                'awards': player_info.awards.split(', ') if player_info.awards else [],
+                'player_name': player_info.case_name
+            }
 
     return player_info_dict
 

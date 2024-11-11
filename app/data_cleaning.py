@@ -22,6 +22,10 @@ def convert_type(df):
         df["BLK"] = -1
     if "3P%" not in df.columns:
         df["3P%"] = -1
+    if "FG%" not in df.columns:
+        df["FG%"] = -1
+    if "FT%" not in df.columns:
+        df["FT%"] = -1
     if "TOV" not in df.columns:
         df["TOV"] = -1
 
@@ -79,8 +83,17 @@ def clean_table(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def front_end_clean(df: pd.DataFrame) -> pd.DataFrame:
-    df.replace("-1", '-', inplace=True)
-    df.replace(-1, '-', inplace=True)
+    if df is None:
+        return df
+    
+    df.replace({"-1": '-', -1: '-'}, inplace=True)
+    
+    columns_to_drop = ['TOV', 'FT%', '3P%']
+    
+    # drop extra stats in the df
+    for col in columns_to_drop:
+        if col in df.columns:
+            df.drop(col, axis=1, inplace=True)
 
     return df
 

@@ -31,7 +31,8 @@ def handle_player_data(user_input):
             reg, playoffs = player.reg, player.post
             player_info = player.get_player_info()
 
-            print("FINAL", reg)
+            # print("FINAL", reg)
+            
             if not player_obj:
                 print("Player is NEW")
                 add_player(player_lower, reg, playoffs, player_info)
