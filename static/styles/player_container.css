@@ -88,8 +88,8 @@
 .award {
     background-color: #45aeda;
     color: white;
-    padding: 0px 10px;
-    margin: 2px 2px;
+    padding: 0px 8px;
+    margin: 1px 1px;
     border-radius: 8px;
     font-size: 12px;
     cursor: pointer;
@@ -97,10 +97,29 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
-    gap: 0.5em;
+    gap: 0.3em;
 }
 
 .award:hover {
+    transform: scale(1.05);
+    /* Slightly increase size on hover */
+}
+
+.test-btn{
+    background-color: #133f79;
+    color: white;
+    margin: 2px 2px;
+    border-radius: 8px;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
+    flex: 1;
+    font-size: 14px;
+    padding: 1em;
+}
+
+.test-btn:hover {
     transform: scale(1.05);
     /* Slightly increase size on hover */
 }

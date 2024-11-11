@@ -1,5 +1,11 @@
-from data_retrieval import PlayerInfo
-from models import db, Player, RegularSeason, PostSeason, PlayerInfo
+"""
+Module that contains all necessary database operations. Includes
+functions for reading, writing, updating, and reformatting queried
+data.
+"""
+
+from .data_retrieval import PlayerInfo
+from ..models.TableModels import db, Player, RegularSeason, PostSeason, PlayerInfo
 import pandas as pd
 
 def add_player(player_query, reg, playoffs, info: dict):
@@ -33,9 +39,14 @@ def add_regular_season_stats(player_id: int, reg) -> None:
             rebounds=reg.iloc[index]['TRB'],
             assists=reg.iloc[index]['AST'],
             steals=reg.iloc[index]['STL'],
-            blocks=reg.iloc[index]['BLK']
+            blocks=reg.iloc[index]['BLK'],
+            fg_percentage=(reg.iloc[index]['FG%']),  # Parse percentage
+            three_point_percentage=(reg.iloc[index]['3P%']),
+            ft_percentage=(reg.iloc[index]['FT%']),
+            turnovers=reg.iloc[index]['TOV']
         )
         db.session.add(reg_season_entry)
+
 
 def add_post_season_stats(player_id: int, playoffs) -> None:
     """Adds post season stats for the player."""
@@ -50,9 +61,14 @@ def add_post_season_stats(player_id: int, playoffs) -> None:
             rebounds=playoffs.iloc[index]['TRB'],
             assists=playoffs.iloc[index]['AST'],
             steals=playoffs.iloc[index]['STL'],
-            blocks=playoffs.iloc[index]['BLK']
+            blocks=playoffs.iloc[index]['BLK'],
+            fg_percentage=(playoffs.iloc[index]['FG%']),  # Parse percentage
+            three_point_percentage=(playoffs.iloc[index]['3P%']),
+            ft_percentage=(playoffs.iloc[index]['FT%']),
+            turnovers=playoffs.iloc[index]['TOV']
         )
         db.session.add(post_season_entry)
+
 
 def add_player_info(player_id: int, info: dict) -> None:
     """Adds player info to the database."""
@@ -129,7 +145,11 @@ def convert_reg_to_df(reg_query):
             'TRB': season.rebounds,
             'AST': season.assists,
             'STL': season.steals,
-            'BLK': season.blocks
+            'BLK': season.blocks,
+            'FG%': season.fg_percentage,
+            'FT%': season.ft_percentage,
+            '3P%': season.three_point_percentage,
+            'TOV': season.turnovers
         } for season in reg_query]
 
         reg_df = pd.DataFrame(reg_data)
@@ -159,7 +179,12 @@ def convert_post_to_df(playoffs_query):
                 'TRB': playoff.rebounds,
                 'AST': playoff.assists,
                 'STL': playoff.steals,
-                'BLK': playoff.blocks
+                'BLK': playoff.blocks,
+                'FG%': playoff.fg_percentage,
+                'FT%': playoff.ft_percentage,
+                '3P%': playoff.three_point_percentage,
+                'TOV': playoff.turnovers
+                 # currently set to None for incomplete data, fix later
             } for playoff in playoffs_query]
 
             playoffs_df = pd.DataFrame(playoffs_data)
@@ -184,13 +209,14 @@ def get_player_info(player_query: str) -> dict:
 
     if query:
         player_info = query.player_info
-        player_info_dict = {
-            'img_link': player_info.link,
-            'position': player_info.positions.split(', ') if player_info.positions else [],
-            'teams': player_info.teams.split(', ') if player_info.teams else [],
-            'awards': player_info.awards.split(', ') if player_info.awards else [],
-            'player_name': player_info.case_name
-        }
+        if player_info:
+            player_info_dict = {
+                'img_link': player_info.link,
+                'position': player_info.positions.split(', ') if player_info.positions else [],
+                'teams': player_info.teams.split(', ') if player_info.teams else [],
+                'awards': player_info.awards.split(', ') if player_info.awards else [],
+                'player_name': player_info.case_name
+            }
 
     return player_info_dict
 
@@ -202,3 +228,29 @@ def query_all_players():
     except Exception as e:
         print("Error retrieving all players:", e)
         return None
+    
+
+def delete_player_from_id(player_id: int) -> bool:
+    """
+    Deletes a player and all related records from the database.
+    """
+    try:
+        PlayerInfo.query.filter_by(player_id=player_id).delete()
+        RegularSeason.query.filter_by(player_id=player_id).delete()
+        PostSeason.query.filter_by(player_id=player_id).delete()
+        player = Player.query.filter_by(id=player_id).delete()
+        
+        db.session.commit()
+        
+        if player:
+            print(f"Successfully deleted player with ID {player_id} and all related data.")
+            return True
+        else:
+            print(f"No player found with ID {player_id}.")
+            return False
+
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error deleting player data: {e}")
+        return False
+

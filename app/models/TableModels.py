@@ -1,3 +1,8 @@
+"""
+Contains the SQL relational tables for Player, RegularSeason,
+PostSeason and PlayerInfo objects.
+"""
+
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -26,6 +31,11 @@ class RegularSeason(db.Model):
     steals = db.Column(db.Float, nullable=True)
     blocks = db.Column(db.Float, nullable=True)
 
+    fg_percentage = db.Column(db.Float, nullable=True)  # Field goal percentage
+    three_point_percentage = db.Column(db.Float, nullable=True)  # 3-point percentage
+    ft_percentage = db.Column(db.Float, nullable=True)  # Free throw percentage
+    turnovers = db.Column(db.Float, nullable=True)  # Turnovers
+
     __table_args__ = (
         db.Index('ix_regular_season_player_season', 'player_id', 'season'),
     )
@@ -44,6 +54,11 @@ class PostSeason(db.Model):
     steals = db.Column(db.Float, nullable=True)
     blocks = db.Column(db.Float, nullable=True)
 
+    fg_percentage = db.Column(db.Float, nullable=True)  # Field goal percentage
+    three_point_percentage = db.Column(db.Float, nullable=True)  # 3-point percentage
+    ft_percentage = db.Column(db.Float, nullable=True)  # Free throw percentage
+    turnovers = db.Column(db.Float, nullable=True)  # Turnovers
+
     __table_args__ = (
         db.Index('ix_post_season_player_season', 'player_id', 'season'),
     )
@@ -58,4 +73,4 @@ class PlayerInfo(db.Model):
     awards = db.Column(db.String(255), nullable=True)
     case_name = db.Column(db.String(100), nullable=True)
 
-    # Removed back reference since it's not needed
+    # removed back reference since it's not needed

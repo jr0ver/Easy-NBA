@@ -1,7 +1,13 @@
-from data_cleaning import front_end_clean
-from database import add_player, convert_reg_to_df, convert_post_to_df, get_player_info, get_player_object, get_player_tables
-from BasketballReference import BasketballReference
-from data_retrieval import PlayerInfo
+"""
+Module for handling player data when first initializing and
+using the app. Retrieves player information by calling functions
+from DB module and accessing various fields
+"""
+
+from .data_cleaning import front_end_clean
+from .database.db_operations import add_player, convert_reg_to_df, convert_post_to_df, get_player_info, get_player_object, get_player_tables
+from .models.BasketballReference import BasketballReference
+from .database.data_retrieval import PlayerInfo
 # from similarity import get_closest_player
 
 def handle_player_data(user_input):
@@ -16,8 +22,7 @@ def handle_player_data(user_input):
         player_info = get_player_info(player_lower)
     
     # player not in DB, WRITE
-    else:
-        print("Player is NEW")
+    elif not player_obj:
         try:
             player_cleaned = user_input.replace("'", "").lower().split()
             player_cleaned = player_cleaned[0] + "_" + player_cleaned[1]
@@ -26,11 +31,17 @@ def handle_player_data(user_input):
             reg, playoffs = player.reg, player.post
             player_info = player.get_player_info()
 
-            add_player(player_lower, reg, playoffs, player_info)
-            player_obj = get_player_object(player_lower)
-        
+            # print("FINAL", reg)
+            
+            if not player_obj:
+                print("Player is NEW")
+                add_player(player_lower, reg, playoffs, player_info)
+                player_obj = get_player_object(player_lower)
+            
+            
         except Exception as e:
             print("Sorry, the player couldn't be found:", e)
             return None
-
+    
+    reg, playoffs = front_end_clean(reg), front_end_clean(playoffs)
     return player_obj, reg, playoffs, player_info
