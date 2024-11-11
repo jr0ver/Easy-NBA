@@ -4,6 +4,7 @@ using the app. Retrieves player information by calling functions
 from DB module and accessing various fields
 """
 
+from .data_cleaning import front_end_clean
 from .database.db_operations import add_player, convert_reg_to_df, convert_post_to_df, get_player_info, get_player_object, get_player_tables
 from .models.BasketballReference import BasketballReference
 from .database.data_retrieval import PlayerInfo
@@ -39,5 +40,6 @@ def handle_player_data(user_input):
         except Exception as e:
             print("Sorry, the player couldn't be found:", e)
             return None
-
+    
+    reg, playoffs = front_end_clean(reg), front_end_clean(playoffs)
     return player_obj, reg, playoffs, player_info

@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 
 def convert_type(df):
     # define the numerical columns you want to convert
-    numerical_columns = ["G", "PTS", "TRB", "AST", "STL", "BLK"]
+    numerical_columns = ["G", "PTS", "TRB", "AST", "STL", "BLK", "FG%", "FT%", "3P%", "TOV"]
     # df = df.copy()
     
     for col in numerical_columns:
@@ -20,6 +20,10 @@ def convert_type(df):
         df["STL"] = -1
     if "BLK" not in df.columns:
         df["BLK"] = -1
+    if "3P%" not in df.columns:
+        df["3P%"] = -1
+    if "TOV" not in df.columns:
+        df["TOV"] = -1
 
     # df.fillna(-1, inplace=True)  # ensure no NaN values remain in numeric columns
 
@@ -54,10 +58,13 @@ def clean_table(df: pd.DataFrame) -> pd.DataFrame:
 
     if df.empty:
         return df # must fix later
-     
+    
+    print("test")
+    print(df)
+
     df = convert_type(df)
-    columns_to_drop = ['Age', 'Lg', 'GS','MP', 'FGA', 'FG', 'FG%', '3P', '3PA', '3P%', '2P', '2PA', '2P%', 
-                   'eFG%', 'FT', 'FTA', 'FT%', 'ORB', 'DRB', 'TOV', 'PF', 'Awards']
+    columns_to_drop = ['Age', 'Lg', 'GS','MP', 'FGA', 'FG', '3P', '3PA', '2P', '2PA', '2P%', 
+                   'eFG%', 'FT', 'FTA', 'ORB', 'DRB', 'PF', 'Awards']
 
     existing_columns_to_drop = [col for col in columns_to_drop if col in df.columns]
     df = df.drop(existing_columns_to_drop, axis=1)
@@ -72,6 +79,7 @@ def clean_table(df: pd.DataFrame) -> pd.DataFrame:
     # print("REG:", df)
     df = df[df['Pos'] != 'Pos']
 
+    print("FINAL", df)
     return df
 
 def front_end_clean(df: pd.DataFrame) -> pd.DataFrame:

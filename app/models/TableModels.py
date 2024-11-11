@@ -31,6 +31,11 @@ class RegularSeason(db.Model):
     steals = db.Column(db.Float, nullable=True)
     blocks = db.Column(db.Float, nullable=True)
 
+    fg_percentage = db.Column(db.Float, nullable=True)  # Field goal percentage
+    three_point_percentage = db.Column(db.Float, nullable=True)  # 3-point percentage
+    ft_percentage = db.Column(db.Float, nullable=True)  # Free throw percentage
+    turnovers = db.Column(db.Float, nullable=True)  # Turnovers
+
     __table_args__ = (
         db.Index('ix_regular_season_player_season', 'player_id', 'season'),
     )
@@ -48,6 +53,11 @@ class PostSeason(db.Model):
     assists = db.Column(db.Float, nullable=False)
     steals = db.Column(db.Float, nullable=True)
     blocks = db.Column(db.Float, nullable=True)
+
+    fg_percentage = db.Column(db.Float, nullable=True)  # Field goal percentage
+    three_point_percentage = db.Column(db.Float, nullable=True)  # 3-point percentage
+    ft_percentage = db.Column(db.Float, nullable=True)  # Free throw percentage
+    turnovers = db.Column(db.Float, nullable=True)  # Turnovers
 
     __table_args__ = (
         db.Index('ix_post_season_player_season', 'player_id', 'season'),

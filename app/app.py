@@ -1,10 +1,10 @@
 from flask import Flask, jsonify, redirect, request, render_template, url_for
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 import matplotlib
 
 from .database.db_operations import delete_player_from_id, get_player_name
 
-from .data_cleaning import front_end_clean
 from .handler import handle_player_data
 from .models.TableModels import db
 from .similarity import get_closest_player
@@ -15,13 +15,12 @@ app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
 db.init_app(app)
-
+migrate = Migrate(app, db)
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-    reg = playoffs = player_info = user_input = closest_player = None
-
-    reset_name = request.args.get('reset')
+    reg = playoffs = player_info = user_input = player_obj = closest_player = None
+    reset_name = request.args.get('reset') # if app route is redirected by home
     
     if request.method == "POST" or reset_name:
         if reset_name:
@@ -33,7 +32,6 @@ def home():
 
         if received_data:
             player_obj, reg, playoffs, player_info = received_data
-            reg, playoffs = front_end_clean(reg), front_end_clean(playoffs)
             
             if player_obj:
                 closest_player = get_closest_player(player_obj.id)
