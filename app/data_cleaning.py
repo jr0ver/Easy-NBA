@@ -59,9 +59,6 @@ def clean_table(df: pd.DataFrame) -> pd.DataFrame:
     if df.empty:
         return df # must fix later
     
-    print("test")
-    print(df)
-
     df = convert_type(df)
     columns_to_drop = ['Age', 'Lg', 'GS','MP', 'FGA', 'FG', '3P', '3PA', '2P', '2PA', '2P%', 
                    'eFG%', 'FT', 'FTA', 'ORB', 'DRB', 'PF', 'Awards']
@@ -79,7 +76,6 @@ def clean_table(df: pd.DataFrame) -> pd.DataFrame:
     # print("REG:", df)
     df = df[df['Pos'] != 'Pos']
 
-    print("FINAL", df)
     return df
 
 def front_end_clean(df: pd.DataFrame) -> pd.DataFrame:

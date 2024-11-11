@@ -39,9 +39,14 @@ def add_regular_season_stats(player_id: int, reg) -> None:
             rebounds=reg.iloc[index]['TRB'],
             assists=reg.iloc[index]['AST'],
             steals=reg.iloc[index]['STL'],
-            blocks=reg.iloc[index]['BLK']
+            blocks=reg.iloc[index]['BLK'],
+            fg_percentage=reg.iloc[index]['FG%'], # new columns
+            three_point_percentage=reg.iloc[index]['3P%'],
+            ft_percentage=reg.iloc[index]['FT%'],
+            turnovers=reg.iloc[index]['TOV']
         )
         db.session.add(reg_season_entry)
+
 
 def add_post_season_stats(player_id: int, playoffs) -> None:
     """Adds post season stats for the player."""
@@ -56,9 +61,14 @@ def add_post_season_stats(player_id: int, playoffs) -> None:
             rebounds=playoffs.iloc[index]['TRB'],
             assists=playoffs.iloc[index]['AST'],
             steals=playoffs.iloc[index]['STL'],
-            blocks=playoffs.iloc[index]['BLK']
+            blocks=playoffs.iloc[index]['BLK'],
+            fg_percentage=playoffs.iloc[index]['FG%'], # new columns
+            three_point_percentage=playoffs.iloc[index]['3P%'],
+            ft_percentage=playoffs.iloc[index]['FT%'],
+            turnovers=playoffs.iloc[index]['TOV']
         )
         db.session.add(post_season_entry)
+
 
 def add_player_info(player_id: int, info: dict) -> None:
     """Adds player info to the database."""
@@ -135,7 +145,8 @@ def convert_reg_to_df(reg_query):
             'TRB': season.rebounds,
             'AST': season.assists,
             'STL': season.steals,
-            'BLK': season.blocks
+            'BLK': season.blocks,
+            'FG%': season.fg_percentage
         } for season in reg_query]
 
         reg_df = pd.DataFrame(reg_data)
@@ -165,7 +176,8 @@ def convert_post_to_df(playoffs_query):
                 'TRB': playoff.rebounds,
                 'AST': playoff.assists,
                 'STL': playoff.steals,
-                'BLK': playoff.blocks
+                'BLK': playoff.blocks,
+                'FG%': playoff.fg_percentage # currently set to None for incomplete data, fix later
             } for playoff in playoffs_query]
 
             playoffs_df = pd.DataFrame(playoffs_data)
