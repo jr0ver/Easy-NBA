@@ -74,6 +74,8 @@ def closest_player_KNN(scaled_df, player_id):
     """Use KNN to find the most similar player"""
     # extract player data (excluding the 'Player_ID' and 'Pos')
     KNN_N = 5
+    NUM_PLAYERS = 1
+
     features = scaled_df[FEATS]
 
     knn = NearestNeighbors(n_neighbors=KNN_N, metric='euclidean')
@@ -85,7 +87,7 @@ def closest_player_KNN(scaled_df, player_id):
     distances, indices = knn.kneighbors(player_vector)
 
     # get the closest player's data
-    closest_player_index = indices[0][1] 
+    closest_player_index = indices[0][1:NUM_PLAYERS + 1]
     closest_player = scaled_df.iloc[closest_player_index]['Player_ID']
 
     return closest_player
@@ -94,9 +96,14 @@ def get_closest_player(id: int) -> str:
     """Returns the closest player name to player with given id."""
     try:
         scaled = scale_data(create_master_table())
-        closest = closest_player_KNN(scaled, id)
-        closest_name = get_player_name(closest)
-        return closest_name
+        # closest = closest_player_KNN(scaled, id)
+        # closest_name = get_player_name(closest)
+        
+        closest_ids = closest_player_KNN(scaled, id)
+        closest_names = [get_player_name(player_id) for player_id in closest_ids]
+        closest_names_str = ", ".join(closest_names)
+        
+        return closest_names_str
     
     # sometimes KNN function returns value error, fix later
     except ValueError as e:
