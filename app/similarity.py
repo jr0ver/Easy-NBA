@@ -8,6 +8,8 @@ from sklearn.neighbors import NearestNeighbors
 import pandas as pd
 from .database.db_operations import get_player_info, get_player_name, query_all_players
 
+FEATS = ['G', 'PTS', 'TRB', 'AST', 'STL', 'BLK', 'FG%', '3P%', 'FG%','FT%', 'TOV']
+
 def create_master_table():
     players = query_all_players()
     
@@ -38,7 +40,11 @@ def create_master_table():
                 'TRB': career_row.rebounds,
                 'AST': career_row.assists,
                 'STL': career_row.steals,
-                'BLK': career_row.blocks
+                'BLK': career_row.blocks,
+                'FG%': career_row.fg_percentage,
+                '3P%': career_row.three_point_percentage,
+                'FT%': career_row.ft_percentage,
+                'TOV':career_row.turnovers
             }
             
             player_data.append(career_dict)
@@ -47,10 +53,19 @@ def create_master_table():
     return df
 
 def scale_data(df):
-    columns_to_scale = ['G', 'PTS', 'TRB', 'AST', 'STL', 'BLK']
-    
+    # adjust weights
+    df['Pos'] = df['Pos'] * 2
+    df['G'] = df['G'] * 0.5
+
+    df['FG%'] = df['FG%'] * 0.75
+    df['3P%'] = df['3P%'] * 0.75
+    df['FT%'] = df['FT%'] * 0.25
+
+    df['TOV'] = df['TOV'] * 0.5
+
+
     scaler = StandardScaler()
-    df[columns_to_scale] = scaler.fit_transform(df[columns_to_scale])  # apply scaling
+    df[FEATS] = scaler.fit_transform(df[FEATS])  # apply scaling
     
     return df
 
@@ -59,13 +74,13 @@ def closest_player_KNN(scaled_df, player_id):
     """Use KNN to find the most similar player"""
     # extract player data (excluding the 'Player_ID' and 'Pos')
     KNN_N = 5
-    features = scaled_df[['G', 'PTS', 'TRB', 'AST', 'STL', 'BLK']]
+    features = scaled_df[FEATS]
 
     knn = NearestNeighbors(n_neighbors=KNN_N, metric='euclidean')
     knn.fit(features)
 
     player_row = scaled_df[scaled_df['Player_ID'] == player_id]
-    player_vector = player_row[['G', 'PTS', 'TRB', 'AST', 'STL', 'BLK']]
+    player_vector = player_row[FEATS]
 
     distances, indices = knn.kneighbors(player_vector)
 
@@ -86,7 +101,7 @@ def get_closest_player(id: int) -> str:
     # sometimes KNN function returns value error, fix later
     except ValueError as e:
         print(f"ValueError: {e}")
-        return "Error: Could not find closest player."
+        return "Oops! The system couldn't find a player due to a value error"
     except Exception as e:
         print(f"Unexpected error: {e}")
-        return "Error: An unexpected issue occurred."
+        return "Oops! An unexpected issue occurred"
