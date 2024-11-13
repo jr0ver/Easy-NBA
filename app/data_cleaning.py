@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from bs4 import BeautifulSoup
 
-def convert_type(df):
+def convert_type(df: pd.DataFrame) -> pd.DataFrame:
     # define the numerical columns you want to convert
     numerical_columns = ["G", "PTS", "TRB", "AST", "STL", "BLK", "FG%", "FT%", "3P%", "TOV"]
     # df = df.copy()
@@ -16,24 +16,15 @@ def convert_type(df):
         if col in df.columns:  # check if the column exists
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
-    if "STL" not in df.columns:
-        df["STL"] = -1
-    if "BLK" not in df.columns:
-        df["BLK"] = -1
-    if "3P%" not in df.columns:
-        df["3P%"] = -1
-    if "FG%" not in df.columns:
-        df["FG%"] = -1
-    if "FT%" not in df.columns:
-        df["FT%"] = -1
-    if "TOV" not in df.columns:
-        df["TOV"] = -1
+    for col in ["STL", "BLK", "3P%", "FG%", "FT%", "TOV"]:
+        if col not in df.columns:
+            df[col] = -1
 
     # df.fillna(-1, inplace=True)  # ensure no NaN values remain in numeric columns
 
     return df
 
-def clean_aggregates(df: pd.DataFrame):
+def clean_aggregates(df: pd.DataFrame) -> pd.DataFrame:
     # create boolean Series
     has_yrs = df['Season'].str.contains('Yr', case=False, na=False)
     yrs_indices = df[has_yrs].index.tolist()
@@ -59,7 +50,6 @@ def clean_fill(df: pd.DataFrame):
     df['G'] = df['G'].astype(int) # need to fix later
     
 def clean_table(df: pd.DataFrame) -> pd.DataFrame:
-
     if df.empty:
         return df # must fix later
     
@@ -87,7 +77,7 @@ def front_end_clean(df: pd.DataFrame) -> pd.DataFrame:
         return df
     
     df.replace({"-1": '-', -1: '-'}, inplace=True)
-    
+
     columns_to_drop = ['TOV', 'FT%', '3P%']
     
     # drop extra stats in the df

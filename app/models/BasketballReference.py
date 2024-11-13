@@ -1,3 +1,8 @@
+"""
+Contains the BasketBallReference object that instantiates fields
+through web requests and data scraping.
+"""
+
 from io import StringIO
 from bs4 import BeautifulSoup
 import pandas as pd

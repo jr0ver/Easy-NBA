@@ -5,12 +5,13 @@ from DB module and accessing various fields
 """
 
 from .data_cleaning import front_end_clean
-from .database.db_operations import add_player, convert_reg_to_df, convert_post_to_df, get_player_info, get_player_object, get_player_tables
+from .database.db_operations import add_player, convert_reg_to_df, convert_post_to_df, delete_player_from_id, get_player_info, get_player_name, get_player_object, get_player_tables
 from .models.BasketballReference import BasketballReference
 from .database.data_retrieval import PlayerInfo
-# from similarity import get_closest_player
+from .similarity import get_closest_player
 
-def handle_player_data(user_input):
+
+def handle_player_data(user_input) -> tuple:
     player_lower = user_input.lower()
     player_obj = get_player_object(player_lower)
 
@@ -45,3 +46,13 @@ def handle_player_data(user_input):
     
     reg, playoffs = front_end_clean(reg), front_end_clean(playoffs)
     return player_obj, reg, playoffs, player_info
+
+def handle_closest_player(id: int) -> str:
+    if id is None:
+        return None
+    # return get_closest_player(id)
+    return "Oops! There has been an error calculating the closest player."
+
+def handle_deletion_status(id: int) -> list[str, bool]:
+    p_name = get_player_name(id)
+    return [p_name, delete_player_from_id(id)]
