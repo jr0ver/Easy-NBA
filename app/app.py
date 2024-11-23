@@ -3,6 +3,7 @@ Module responsible for initializing Flask app and b asic configs. This file
 also contains major app_routes such as the home and delete app route.
 """
 
+import os
 from flask import Flask, jsonify, redirect, request, render_template, url_for
 from flask_migrate import Migrate
 
@@ -11,7 +12,7 @@ from .models.TableModels import db
 
 app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URI_MYSQL')
 db.init_app(app)
 migrate = Migrate(app, db)
 

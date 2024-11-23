@@ -22,7 +22,7 @@ class RegularSeason(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     player_id = db.Column(db.Integer, db.ForeignKey("player.id"), nullable=False)
     season = db.Column(db.String(10), nullable=False)
-    team = db.Column(db.String(5), nullable=True)
+    team = db.Column(db.String(10), nullable=True)
     pos = db.Column(db.String(5), nullable=True)
     games = db.Column(db.Integer, nullable=False)
     points = db.Column(db.Float, nullable=False)
@@ -45,7 +45,7 @@ class PostSeason(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     player_id = db.Column(db.Integer, db.ForeignKey("player.id"), nullable=False)
     season = db.Column(db.String(10), nullable=False)
-    team = db.Column(db.String(5), nullable=True)
+    team = db.Column(db.String(10), nullable=True)
     pos = db.Column(db.String(5), nullable=True)
     games = db.Column(db.Integer, nullable=False)
     points = db.Column(db.Float, nullable=False)
@@ -70,7 +70,7 @@ class PlayerInfo(db.Model):
     link = db.Column(db.String(255), nullable=True)
     positions = db.Column(db.String(255), nullable=True)
     teams = db.Column(db.String(255), nullable=True)
-    awards = db.Column(db.String(255), nullable=True)
+    awards = db.Column(db.Text, nullable=True)
     case_name = db.Column(db.String(100), nullable=True)
 
     # removed back reference since it's not needed
