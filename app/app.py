@@ -33,6 +33,8 @@ def home():
             
             if player_obj:
                 closest_player = handle_closest_player(player_obj.id)
+                # closest_player = "Oops! There has been an error calculating the closest player."
+
     
     return render_template(
         "index.html",

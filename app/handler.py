@@ -50,8 +50,7 @@ def handle_player_data(user_input) -> tuple:
 def handle_closest_player(id: int) -> str:
     if id is None:
         return None
-    # return get_closest_player(id)
-    return "Oops! There has been an error calculating the closest player."
+    return get_closest_player(id)
 
 def handle_deletion_status(id: int) -> list[str, bool]:
     p_name = get_player_name(id)

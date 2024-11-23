@@ -27,7 +27,7 @@ def format_all_league(counter: dict) -> list:
         
     return format
 
-def separate_all_league(soup: BeautifulSoup):
+def seperate_all_league(soup: BeautifulSoup):
     # parses the HTML table for all-league info
 
     if soup is None:
@@ -55,8 +55,8 @@ def get_all_league_list(soup: BeautifulSoup) -> BeautifulSoup:
     
     # div = soup.find('ul', id="leaderboard_all_league")
     """for some reason BeautifulSoup cannot find the div with
-    id='leaderboard_all_league, this is probably a BeautifulSoup error.
-    Alternatively, we manually via string methods"""
+    id='leaderboard_all_league', this is probably a BeautifulSoup error.
+    Alternatively, we manually find it via string methods"""
 
     soup_string = str(soup)
     start_index = soup_string.find('<div id="leaderboard_all_league"')

@@ -6,7 +6,7 @@ a PlayerInfo object.
 import pandas as pd
 from bs4 import BeautifulSoup
 from ..models.BasketballReference import BasketballReference
-from ..awards import format_all_league, get_all_league_list, get_awards_list, separate_all_league
+from ..awards import format_all_league, get_all_league_list, get_awards_list, seperate_all_league
 from ..data_cleaning import clean_table
 
 
@@ -43,7 +43,7 @@ class PlayerInfo:
 
         # awards require info from 2 places
         awards = get_awards_list(self.player_ref.get_player_div())
-        extras = separate_all_league(get_all_league_list(self.player_ref.soup))
+        extras = seperate_all_league(get_all_league_list(self.player_ref.soup))
         extras = format_all_league(extras)
         if extras:
             awards.extend(extras)
