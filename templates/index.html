@@ -22,8 +22,8 @@
             <div class="title">Easy-NBA</div>
             <nav>
                 <ul class="navlist">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">How To</a></li>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('compare') }}">Compare</a></li>
                     <li><a href="#">Social</a></li>
                 </ul>
             </nav>
@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 {% endif %}
-                <div class ="stats-head">
+                <div class ="stats-head boxify">
                     <h2>Regular Season Stats</h2>
                 </div>
                 <div class="scroll center">{{ reg | safe }}</div>

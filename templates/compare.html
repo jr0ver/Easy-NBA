@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/utils.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/table.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/player_container.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/compare.css') }}" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.4/lottie.min.js"></script>
+    <script src="{{ url_for('static', filename='js/lottie.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/awards.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/delete.js') }}"></script>
+
+
+    <title>Easy NBA</title>
+</head>
+<body>
+    <div id="lottie"></div> <!-- Background Lottie Animation -->
+    <div class="body">
+        <header>
+            <div class="title">Easy-NBA</div>
+            <nav>
+                <ul class="navlist">
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('compare') }}">Compare</a></li>
+                    <li><a href="#">Social</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="gradient">
+            <div class="content center">
+                <h1>Compare two NBA Players!</h1>
+                <p>
+                    Please use their common names and include punctuation when necessary.
+                    <br />
+                    Ex: 'Magic Johnson', 'shaQUILLE O'neal' are both valid but...
+                    'Earvin Johnson' and 'shaquille oneal' are not.
+                    <br /><br />
+                    Please allow up to 5 seconds for results :)
+                </p>
+                <form action="{{ url_for('compare') }}" method="post">
+                        <input type="text" placeholder="Enter first player" name="player1" required />
+                        <input type="text" placeholder="Enter second player" name="player2" required />
+                    <button type="submit">Compare Players</button>
+                </form>
+
+                {% if player1_info and player2_info %}
+                <div class="player-container boxify">
+                    <div class="heading">
+                        {{ player1_info["player_name"] }}⠀vs⠀{{ player2_info["player_name"] }}
+                    </div>
+                    <div class="sides">
+                        <div class="compare-box">
+                            <div class="frame">
+                                <img src="{{ player1_info['img_link'] }}" alt="NBA Player" />
+                                <div class="info">
+                                    <b>{{ player1_info["player_name"] }}</b>
+                                    <p><b>POS: </b>{{ player1_info["position"] }}</p>
+                                    <p class="max-width">
+                                        <b>Primary Teams: <br /></b>{{ player1_info["teams"] }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="extra info">
+                                <b>{{player1_info["awards"][:3]}}</b>
+                            </div>
+                        </div>
+                        <div class="compare-box">
+                            <div class="frame">
+                                <img src="{{ player2_info['img_link'] }}" alt="NBA Player" />
+                                <div class="info">
+                                    <b>{{ player2_info["player_name"] }}</b>
+                                    <p><b>POS: </b>{{ player2_info["position"] }}</p>
+                                    <p class="max-width">
+                                        <b>Primary Teams: <br /></b>{{ player2_info["teams"] }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="extra info">
+                                <b>{{player1_info["awards"][:3]}}</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="player-container boxify">
+                    <div class="heading">
+                        Stat Comparison
+                    </div>
+                    <!-- <div class="sides">
+                        <div class="compare-box">
+                            <div class="frame">
+                                <img src="{{ player1_info['img_link'] }}" alt="NBA Player" />
+                                <div class="info">
+                                    <b>{{ player1_info["player_name"] }}</b>
+                                    <p><b>POS: </b>{{ player1_info["position"] }}</p>
+                                    <p class="max-width">
+                                        <b>Primary Teams: <br /></b>{{ player1_info["teams"] }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="extra info">
+                                <b>{{player1_info["awards"][:3]}}</b>
+                            </div>
+                        </div>
+                        <div class="compare-box">
+                            <div class="frame">
+                                <img src="{{ player2_info['img_link'] }}" alt="NBA Player" />
+                                <div class="info">
+                                    <b>{{ player2_info["player_name"] }}</b>
+                                    <p><b>POS: </b>{{ player2_info["position"] }}</p>
+                                    <p class="max-width">
+                                        <b>Primary Teams: <br /></b>{{ player2_info["teams"] }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="extra info">
+                                <b>{{player1_info["awards"][:3]}}</b>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+                
+
+                <div class ="stats-head">
+                    <h2>Career Stats Comparison</h2>
+                </div>
+                
+                <h3>{{player1_info['player_name']}}</h3>
+                <div class="scroll center">{{ df1 | safe }}</div>
+                <h3>{{player2_info['player_name']}}</h3>
+                <div class="scroll center">{{ df2 | safe }}</div>
+
+
+
+                {% else %}
+                <p>One or both players not found, please try again.</p>
+                {% endif %}
+
+            </div>
+        </main>
+
+        <footer>
+            <p>Made by Zohair Syed - Currently in Development</p>
+        </footer>
+    </div>
+</body>
+</html>

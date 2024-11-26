@@ -19,6 +19,7 @@
     font-weight: bold;
     font-size: 1.5em;
     color: white;
+    border-radius: 15px 15px 0 0;
 }
 
 .sides {
@@ -29,7 +30,7 @@
     background-color: #cceaff;
     flex-wrap: wrap;
     justify-content: center;
-    /* width: 100%; */
+    border-radius: 0 0 15px 15px;
 }
 
 
@@ -43,6 +44,7 @@
 .info {
     padding: 1em;
     margin-bottom: 1em;
+    width: 132px;
     display: flex;
     align-items: center;
     flex-direction: column;
