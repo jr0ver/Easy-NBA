@@ -7,7 +7,7 @@ from DB module and accessing various fields
 import pandas as pd
 
 from .awards import get_priority_awards
-from .comparison import create_comp_df
+from .comparison import create_comp_df, create_comp_dict
 from .data_cleaning import front_end_clean
 from .database.db_operations import add_player, convert_reg_to_df, convert_post_to_df, delete_player_from_id, get_player_info, get_player_name, get_player_object, get_player_tables
 from .models.BasketballReference import BasketballReference
@@ -94,3 +94,8 @@ def handle_comparison(p1: str, p2: str) -> dict:
             comp_df2 = create_comp_df(df1, df2)
 
     return p1_info, p2_info, comp_df1, comp_df2
+
+def handle_comp_dict(comp_df1: pd.DataFrame, comp_df2: pd.DataFrame) -> tuple[dict,dict]:
+    if comp_df1 or comp_df1 is None:
+         return {}, {}
+    return create_comp_dict(comp_df1, comp_df2)

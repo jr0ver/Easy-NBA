@@ -33,3 +33,99 @@ input[type="text"] {
     align-items: center;
     flex-direction: column;
 }
+
+.stat-bar{
+    padding: 1em 3em;
+    background-color: white;
+}
+
+.bar-container {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0.25em;
+    flex-direction: column;
+}
+
+.bar-section {
+    width: 100%;
+    margin-bottom: 1.25em;
+}
+
+.stat-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.bar-stat {
+    font-weight: bold;
+    font-size: 1.1em;
+    text-align: left;
+    min-width: 6em;
+    color:#133f79;
+    font-family: Poppins;
+}
+
+.player-values-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    min-width: 3em;
+    padding: 0.5em;
+}
+
+.player-value {
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.bar-visual-container {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    flex-grow: 1;
+}
+
+.bar-visual {
+    height: 20px;
+    background-color: #3498db;
+    border-radius: 5px;
+    transition: width 0.5s;
+}
+
+
+.legend-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    flex-wrap: wrap;
+    row-gap: 1em;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.color-box {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.player-label {
+    font-weight: bold;
+}
+
+@media (max-width: 1015px) {
+    .compare-box {
+        max-width: 16em; 
+    }
+    .sides {
+        gap: 0em; 
+    }
+  }

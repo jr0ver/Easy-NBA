@@ -11,9 +11,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.4/lottie.min.js"></script>
     <script src="{{ url_for('static', filename='js/lottie.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/awards.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/delete.js') }}"></script>
-
+    <script src="{{ url_for('static', filename='js/stats.js') }}"></script>
 
     <title>Easy NBA</title>
 </head>
@@ -34,7 +32,7 @@
         <main class="gradient">
             <div class="content center">
                 <h1>Compare two NBA Players!</h1>
-                <p>
+                <p class="intro">
                     Please use their common names and include punctuation when necessary.
                     <br />
                     Ex: 'Magic Johnson', 'shaQUILLE O'neal' are both valid but...
@@ -95,38 +93,13 @@
                     <div class="heading">
                         Stat Comparison
                     </div>
-                    <!-- <div class="sides">
-                        <div class="compare-box">
-                            <div class="frame">
-                                <img src="{{ player1_info['img_link'] }}" alt="NBA Player" />
-                                <div class="info">
-                                    <b>{{ player1_info["player_name"] }}</b>
-                                    <p><b>POS: </b>{{ player1_info["position"] }}</p>
-                                    <p class="max-width">
-                                        <b>Primary Teams: <br /></b>{{ player1_info["teams"] }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="extra info">
-                                <b>{{player1_info["awards"][:3]}}</b>
-                            </div>
-                        </div>
-                        <div class="compare-box">
-                            <div class="frame">
-                                <img src="{{ player2_info['img_link'] }}" alt="NBA Player" />
-                                <div class="info">
-                                    <b>{{ player2_info["player_name"] }}</b>
-                                    <p><b>POS: </b>{{ player2_info["position"] }}</p>
-                                    <p class="max-width">
-                                        <b>Primary Teams: <br /></b>{{ player2_info["teams"] }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="extra info">
-                                <b>{{player1_info["awards"][:3]}}</b>
-                            </div>
-                        </div>
-                    </div> -->
+                    <!-- dynamic graph rendering done below -->
+                    <div class="bar-container stat-bar" id="bar-container"
+                        data-player1-stats='{{ player1_stats | tojson }}'
+                        data-player1-name="{{ player1_info['player_name'] }}"
+                        data-player2-stats='{{ player2_stats | tojson }}'
+                        data-player2-name="{{ player2_info['player_name'] }}">
+                      </div>
                 </div>
                 
 
