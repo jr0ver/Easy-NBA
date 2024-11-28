@@ -76,9 +76,9 @@
                                 <img src="{{ player2_info['img_link'] }}" alt="NBA Player" />
                                 <div class="info">
                                     <b>{{ player2_info["player_name"] }}</b>
-                                    <p><b>POS: </b>{{ player2_info["position"] }}</p>
+                                    <p><b>POS: </b>{{ player2_info["position"] | join(', ')}}</p>
                                     <p class="max-width">
-                                        <b>Primary Teams: <br /></b>{{ player2_info["teams"] }}
+                                        <b>Primary Teams: <br /></b>{{ player2_info["teams"] | join(', ')}}
                                     </p>
                                 </div>
                             </div>
