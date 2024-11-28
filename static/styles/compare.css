@@ -25,6 +25,7 @@ input[type="text"] {
 .extra{
     margin: 1em;
     max-width: 100px;
+    padding: 3em 1em;
 }
 
 .frame{

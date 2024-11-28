@@ -59,14 +59,16 @@
                                 <img src="{{ player1_info['img_link'] }}" alt="NBA Player" />
                                 <div class="info">
                                     <b>{{ player1_info["player_name"] }}</b>
-                                    <p><b>POS: </b>{{ player1_info["position"] }}</p>
+                                    <p><b>POS: </b>{{ player1_info["position"] | join(', ')}}</p>
                                     <p class="max-width">
-                                        <b>Primary Teams: <br /></b>{{ player1_info["teams"] }}
+                                        <b>Primary Teams: <br /></b>{{ player1_info["teams"] | join(', ')}}
                                     </p>
                                 </div>
                             </div>
                             <div class="extra info">
-                                <b>{{player1_info["awards"][:3]}}</b>
+                                {% for award, value in player1_info["priority_awards"].items() %}
+                                <p><strong>{{ award }}:</strong> {{ value }}</p>
+                                {% endfor %}
                             </div>
                         </div>
                         <div class="compare-box">
@@ -81,7 +83,9 @@
                                 </div>
                             </div>
                             <div class="extra info">
-                                <b>{{player1_info["awards"][:3]}}</b>
+                                {% for award, value in player2_info["priority_awards"].items() %}
+                                <p><strong>{{ award }}:</strong> {{ value }}</p>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>

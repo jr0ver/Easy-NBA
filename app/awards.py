@@ -90,3 +90,14 @@ def get_awards_list(soup: BeautifulSoup) -> list:
 
     return awards
 
+def get_priority_awards(awards: list[str]) -> dict:
+    d = {"Rings": 0, "All-Star": 0, "All-NBA": 0}
+    for award in awards:
+        if "All Star" in award:
+            d["All-Star"] = award.split('x')[0]
+        elif "All-NBA" in award:
+            d['All-NBA'] += int(award.split('x')[0])
+        elif "Champ" in award:
+            d['Rings'] = award.split('x')[0]
+    # print(d)
+    return d

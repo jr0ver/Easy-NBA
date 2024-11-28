@@ -44,7 +44,6 @@
 .info {
     padding: 1em;
     margin-bottom: 1em;
-    width: 132px;
     display: flex;
     align-items: center;
     flex-direction: column;

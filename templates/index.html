@@ -54,8 +54,8 @@
                             <img src="{{player_info['img_link']}}" alt="NBA Player" />
                             <div class="info">
                                 <b>{{player_info["player_name"]}}</b>
-                                <p><b>POS: </b>{{player_info["position"]}}</p>
-                                <p class="max-width"><b>Primary Teams: <br /></b>{{player_info["teams"]}}</p>
+                                <p><b>POS: </b>{{player_info["position"] | join(', ')}}</p>
+                                <p class="max-width"><b>Primary Teams: <br /></b>{{player_info["teams"] | join(', ')}}</p>
                             </div>
                                 <button class="test-btn" id='delete-btn' data-player-id='{{player_id}}'>Update Stats</button>
                         </div>
@@ -63,7 +63,7 @@
                             <div class="awards round" data-awards='{{ player_info["awards"]|tojson|safe }}'>
                             </div>
                             <div class="more-info round">
-                                <p>Closest Player in DB: {{closest_player}}</p>
+                                <p>Closest Player in DB: {{closest_player | join(', ')}}</p>
                             </div>
                         </div>
                     </div>

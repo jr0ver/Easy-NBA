@@ -101,9 +101,9 @@ def get_closest_player(id: int) -> str:
         
         closest_ids = closest_player_KNN(scaled, id)
         closest_names = [get_player_name(player_id) for player_id in closest_ids]
-        closest_names_str = ", ".join(closest_names)
+        # closest_names_str = ", ".join(closest_names)
         
-        return closest_names_str
+        return closest_names
     
     # sometimes KNN function returns value error, fix later
     except ValueError as e:
