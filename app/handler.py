@@ -96,6 +96,6 @@ def handle_comparison(p1: str, p2: str) -> dict:
     return p1_info, p2_info, comp_df1, comp_df2
 
 def handle_comp_dict(comp_df1: pd.DataFrame, comp_df2: pd.DataFrame) -> tuple[dict,dict]:
-    if comp_df1 or comp_df1 is None:
+    if comp_df1 is None or comp_df2 is None:
          return {}, {}
     return create_comp_dict(comp_df1, comp_df2)
