@@ -19,6 +19,7 @@
     font-weight: bold;
     font-size: 1.5em;
     color: white;
+    border-radius: 15px 15px 0 0;
 }
 
 .sides {
@@ -29,7 +30,7 @@
     background-color: #cceaff;
     flex-wrap: wrap;
     justify-content: center;
-    /* width: 100%; */
+    border-radius: 0 0 15px 15px;
 }
 
 

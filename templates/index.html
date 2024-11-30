@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{{ url_for('static', filename='easynba.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/utils.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/table.css') }}" />
@@ -22,8 +23,8 @@
             <div class="title">Easy-NBA</div>
             <nav>
                 <ul class="navlist">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">How To</a></li>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('compare') }}">Compare</a></li>
                     <li><a href="#">Social</a></li>
                 </ul>
             </nav>
@@ -32,7 +33,7 @@
         <main class="gradient">
             <div class="content center">
                 <h1>Enter an NBA player to start!</h1>
-                <p>
+                <p class="intro">
                     Please use their common names and include punctuation when necessary.
                     <br />
                     Ex: 'Magic Johnson', 'shaQUILLE O'neal' are both valid but...
@@ -54,8 +55,8 @@
                             <img src="{{player_info['img_link']}}" alt="NBA Player" />
                             <div class="info">
                                 <b>{{player_info["player_name"]}}</b>
-                                <p><b>POS: </b>{{player_info["position"]}}</p>
-                                <p class="max-width"><b>Primary Teams: <br /></b>{{player_info["teams"]}}</p>
+                                <p><b>POS: </b>{{player_info["position"] | join(', ')}}</p>
+                                <p class="max-width"><b>Primary Teams: <br /></b>{{player_info["teams"] | join(', ')}}</p>
                             </div>
                                 <button class="test-btn" id='delete-btn' data-player-id='{{player_id}}'>Update Stats</button>
                         </div>
@@ -63,13 +64,13 @@
                             <div class="awards round" data-awards='{{ player_info["awards"]|tojson|safe }}'>
                             </div>
                             <div class="more-info round">
-                                <p>Closest Player in DB: {{closest_player}}</p>
+                                <p>Closest Player in DB: {{closest_player | join(', ')}}</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 {% endif %}
-                <div class ="stats-head">
+                <div class ="stats-head boxify">
                     <h2>Regular Season Stats</h2>
                 </div>
                 <div class="scroll center">{{ reg | safe }}</div>

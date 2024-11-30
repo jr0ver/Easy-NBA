@@ -1,0 +1,110 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("bar-container");
+
+    // Get data from data attributes
+    const player1Stats = JSON.parse(container.getAttribute("data-player1-stats"));
+    const player2Stats = JSON.parse(container.getAttribute("data-player2-stats"));
+
+    const players = [container.getAttribute("data-player1-name"), 
+        container.getAttribute("data-player2-name")];
+
+    const playerStats = {
+        "Points": [player1Stats.PTS, player2Stats.PTS],
+        "Rebounds": [player1Stats.TRB, player2Stats.TRB],
+        "Assists": [player1Stats.AST, player2Stats.AST],
+        "Blocks": [player1Stats.BLK, player2Stats.BLK],
+        "Steals": [player1Stats.STL, player2Stats.STL],
+        "FG%": [player1Stats['FG%'], player2Stats['FG%']],
+
+    };
+
+    // Player colors (you can change these as needed)
+    const playerColors = ["#133f79", "#009879"];  // Blue for Player A, Green for Player B
+
+    // Create the legend section
+    function createLegend() {
+        const legendContainer = document.createElement("div");
+        legendContainer.className = "legend-container";
+
+        for (let i = 0; i < players.length; i++) {
+            const legendItem = document.createElement("div");
+            legendItem.className = "legend-item";
+
+            // Create the colored box
+            const colorBox = document.createElement("div");
+            colorBox.className = "color-box";
+            colorBox.style.backgroundColor = playerColors[i];
+
+            // Create the player label
+            const playerLabel = document.createElement("div");
+            playerLabel.className = "player-label";
+            playerLabel.innerText = players[i];
+
+            legendItem.appendChild(colorBox);
+            legendItem.appendChild(playerLabel);
+            legendContainer.appendChild(legendItem);
+        }
+
+        container.insertBefore(legendContainer, container.firstChild);  // Insert the legend at the top
+    }
+
+    // Function to create the bar sections
+    function createBarSection(statName, values) {
+        const maxValue = Math.max(...values);
+
+        // Create a section for each stat
+        const section = document.createElement("div");
+        section.className = "bar-section";
+
+        // Create a row for the stat name (left column)
+        const statRow = document.createElement("div");
+        statRow.className = "stat-row";
+
+        // Stat name (only once)
+        const statLabel = document.createElement("div");
+        statLabel.className = "bar-stat";
+        statLabel.innerText = statName;
+
+        // Player names and values column (middle column)
+        const playerValuesContainer = document.createElement("div");
+        playerValuesContainer.className = "player-values-container";
+
+        // Bar visual container (right column)
+        const barVisualContainer = document.createElement("div");
+        barVisualContainer.className = "bar-visual-container";
+
+        // Add player names and values + bars to the row
+        for (let i = 0; i < values.length; i++) {
+            const playerValue = document.createElement("div");
+            playerValue.className = "player-value";
+            playerValue.innerText = `${values[i]}`;
+
+            const barVisual = document.createElement("div");
+            barVisual.className = "bar-visual";
+            barVisual.style.width = `${(values[i] / maxValue) * 100}%`;
+            barVisual.style.backgroundColor = playerColors[i];  // Set the color based on the player
+
+            const barContainer = document.createElement("div");
+            barContainer.className = "bar-container";
+            barContainer.appendChild(barVisual);
+
+            // Append player data (name + value) and bar visual
+            playerValuesContainer.appendChild(playerValue);
+            barVisualContainer.appendChild(barContainer);
+        }
+
+        statRow.appendChild(statLabel);
+        statRow.appendChild(playerValuesContainer);
+        statRow.appendChild(barVisualContainer);
+        section.appendChild(statRow);
+        container.appendChild(section);
+    }
+
+    // Create the legend at the top of the container
+    createLegend();
+
+    // Generate bars for each stat
+    for (const [statName, values] of Object.entries(playerStats)) {
+        createBarSection(statName, values);
+    }
+});

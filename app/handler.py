@@ -4,6 +4,10 @@ using the app. Retrieves player information by calling functions
 from DB module and accessing various fields
 """
 
+import pandas as pd
+
+from .awards import get_priority_awards
+from .comparison import create_comp_df, create_comp_dict
 from .data_cleaning import front_end_clean
 from .database.db_operations import add_player, convert_reg_to_df, convert_post_to_df, delete_player_from_id, get_player_info, get_player_name, get_player_object, get_player_tables
 from .models.BasketballReference import BasketballReference
@@ -21,7 +25,9 @@ def handle_player_data(user_input) -> tuple:
         reg_query, playoffs_query = get_player_tables(player_obj)
         reg, playoffs = convert_reg_to_df(reg_query), convert_post_to_df(playoffs_query)
         player_info = get_player_info(player_lower)
-    
+        # new
+        player_info['priority_awards'] = get_priority_awards(player_info['awards'])
+
     # player not in DB, WRITE
     elif not player_obj:
         try:
@@ -31,8 +37,8 @@ def handle_player_data(user_input) -> tuple:
             player = PlayerInfo(player_raw)
             reg, playoffs = player.reg, player.post
             player_info = player.get_player_info()
-
-            # print("FINAL", reg)
+            # new
+            player_info['priority_awards'] = get_priority_awards(player_info['awards'])
             
             if not player_obj:
                 print("Player is NEW")
@@ -47,11 +53,49 @@ def handle_player_data(user_input) -> tuple:
     reg, playoffs = front_end_clean(reg), front_end_clean(playoffs)
     return player_obj, reg, playoffs, player_info
 
+
 def handle_closest_player(id: int) -> str:
     if id is None:
         return None
     return get_closest_player(id)
 
+
 def handle_deletion_status(id: int) -> list[str, bool]:
     p_name = get_player_name(id)
     return [p_name, delete_player_from_id(id)]
+
+# handles /compare, returns player dictionaries and aggregate dfs
+def handle_comparison(p1: str, p2: str) -> dict:
+    p1_info, p2_info = {}, {}
+    comp_df1, comp_df2 = None, None
+
+    p1_recv = handle_player_data(p1)
+    p2_recv = handle_player_data(p2)
+
+    # conditionally get players
+    if p1_recv:
+            p1_obj, reg1, playoffs1, p1_info = p1_recv
+            df1 = reg1[reg1['Season']=='Career']
+            
+            df2 = pd.DataFrame()
+            if not playoffs1.empty:
+                df2 = playoffs1[playoffs1['Season']=='Career']
+            
+            comp_df1 = create_comp_df(df1, df2)
+
+    if p2_recv:
+            p2_obj, reg2, playoffs2, p2_info = p2_recv
+            df1 = reg2[reg2['Season']=='Career']
+            
+            df2 = pd.DataFrame()
+            if not playoffs2.empty:
+                df2 = playoffs2[playoffs2['Season']=='Career']            
+            
+            comp_df2 = create_comp_df(df1, df2)
+
+    return p1_info, p2_info, comp_df1, comp_df2
+
+def handle_comp_dict(comp_df1: pd.DataFrame, comp_df2: pd.DataFrame) -> tuple[dict,dict]:
+    if comp_df1 is None or comp_df2 is None:
+         return {}, {}
+    return create_comp_dict(comp_df1, comp_df2)
