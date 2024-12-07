@@ -18,7 +18,7 @@ from .similarity import get_closest_player
 def handle_player_data(user_input) -> tuple:
     player_lower = user_input.lower()
     player_obj = get_player_object(player_lower)
-
+    print('test')
     # player already in DB, READ
     if player_obj:
         print("Player is already in the database")
@@ -46,7 +46,7 @@ def handle_player_data(user_input) -> tuple:
                 add_player(player_lower, reg, playoffs, player_info)
                 player_obj = get_player_object(player_lower)
 
-                update_master_player(player_obj.id, reg)
+                # update_master_player(player_obj.id, reg)
                 # print(player_obj.id)
             
         except Exception as e:
