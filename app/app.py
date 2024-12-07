@@ -13,7 +13,7 @@ from .models.TableModels import db
 
 app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URI_MYSQL')
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
 db.init_app(app)
 migrate = Migrate(app, db)
 
@@ -83,3 +83,6 @@ def compare():
                            player2_stats=player2_stats,
                            df1=comp_df1.to_html(classes="data") if comp_df1 is not None else None,
                            df2=comp_df2.to_html(classes="data") if comp_df2 is not None else None)
+
+with app.app_context():
+    db.create_all()
