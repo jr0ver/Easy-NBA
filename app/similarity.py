@@ -6,10 +6,12 @@ similarity. Hosts a KNN model to find closest players.
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import NearestNeighbors
 import pandas as pd
-from .database.db_operations import get_player_info, get_player_name, query_all_players
+
+from .database.db_operations import get_player_info, get_player_name, query_all_master_table, query_all_players
 
 FEATS = ['G', 'PTS', 'TRB', 'AST', 'STL', 'BLK', 'FG%', '3P%', 'FG%','FT%', 'TOV']
 
+# deprecated for now
 def create_master_table():
     players = query_all_players()
     
@@ -50,6 +52,36 @@ def create_master_table():
             player_data.append(career_dict)
     
     df = pd.DataFrame(player_data)
+    return df
+
+# slightly more optimized
+def create_master_table2():
+    master_players = query_all_master_table()
+    columns = [
+        'Player_ID', 'G', 'Pos', 'PTS', 'TRB', 'AST',
+        'STL', 'BLK', 'TOV', 'FG%', '3P%',
+        'FT%'
+    ]
+    
+    data = []
+
+    for player in master_players:
+        data.append([
+            player.player_id,
+            player.games,
+            player.pos,
+            player.points,
+            player.rebounds,
+            player.assists,
+            player.steals,
+            player.blocks,
+            player.turnovers,
+            player.fg_percentage,
+            player.three_point_percentage,
+            player.free_throw_percentage,
+        ])
+    
+    df = pd.DataFrame(data, columns=columns)
     return df
 
 def scale_data(df):
@@ -95,14 +127,13 @@ def closest_player_KNN(scaled_df, player_id):
 def get_closest_player(id: int) -> str:
     """Returns the closest player name to player with given id."""
     try:
-        scaled = scale_data(create_master_table())
-        # closest = closest_player_KNN(scaled, id)
-        # closest_name = get_player_name(closest)
+        # scaled = scale_data(create_master_table())
+        scaled = scale_data(create_master_table2())
         
         closest_ids = closest_player_KNN(scaled, id)
         closest_names = [get_player_name(player_id) for player_id in closest_ids]
-        # closest_names_str = ", ".join(closest_names)
         
+        create_master_table2()
         return closest_names
     
     # sometimes KNN function returns value error, fix later

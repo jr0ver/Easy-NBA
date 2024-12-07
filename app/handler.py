@@ -9,7 +9,7 @@ import pandas as pd
 from .awards import get_priority_awards
 from .comparison import create_comp_df, create_comp_dict
 from .data_cleaning import front_end_clean
-from .database.db_operations import add_player, convert_reg_to_df, convert_post_to_df, delete_player_from_id, get_player_info, get_player_name, get_player_object, get_player_tables
+from .database.db_operations import add_player, convert_reg_to_df, convert_post_to_df, delete_player_from_id, get_player_info, get_player_name, get_player_object, get_player_tables, update_master_player
 from .models.BasketballReference import BasketballReference
 from .database.data_retrieval import PlayerInfo
 from .similarity import get_closest_player
@@ -27,6 +27,7 @@ def handle_player_data(user_input) -> tuple:
         player_info = get_player_info(player_lower)
         # new
         player_info['priority_awards'] = get_priority_awards(player_info['awards'])
+        # update_master_player(player_obj.id, reg) #for manual update
 
     # player not in DB, WRITE
     elif not player_obj:
@@ -44,7 +45,9 @@ def handle_player_data(user_input) -> tuple:
                 print("Player is NEW")
                 add_player(player_lower, reg, playoffs, player_info)
                 player_obj = get_player_object(player_lower)
-            
+
+                update_master_player(player_obj.id, reg)
+                # print(player_obj.id)
             
         except Exception as e:
             print("Sorry, the player couldn't be found:", e)
