@@ -58,8 +58,13 @@
             </div>
         </div>
 
-        <div class="player-container boxify">
-            <div class="heading">Stat Comparison</div>
+        <div class="player-container boxify" id="chart">
+            <div class="heading">Stat Comparison
+                <button id="download" class="download-btn">
+                    <img class='svg' src="../static/download.svg" width="30em" height="30em">
+                </button>
+
+            </div>
             <!-- dynamic graph rendering done below -->
             <div class="bar-container stat-bar" id="bar-container"
                 data-player1-stats='{{ player1_stats | tojson }}'
@@ -67,7 +72,7 @@
                 data-player2-stats='{{ player2_stats | tojson }}'
                 data-player2-name="{{ player2_info['player_name'] }}">
                 <p class="score">
-                    <span id="infoText" class="info-text">Similarity Score:</span>
+                    <span id="infoText" class="info-text">Similarity Score*:</span>
                     {{score | round(4)}}
                 </p>
 
