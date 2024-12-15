@@ -1,3 +1,4 @@
+import random
 from time import sleep
 import requests
 
@@ -21,7 +22,9 @@ url = "http://127.0.0.1:5000/"
 
 # send POST requests
 for name in names:
-    sleep(2)
+    delay_time = random.uniform(7, 13)
+    sleep(delay_time)
+
     response = requests.post(url, data={"player": name})
     
     if response.status_code == 200:
