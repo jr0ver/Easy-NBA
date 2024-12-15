@@ -33,6 +33,7 @@ class RegularSeason(db.Model):
     assists = db.Column(db.Float, nullable=False)
     steals = db.Column(db.Float, nullable=True)
     blocks = db.Column(db.Float, nullable=True)
+    minutes = db.Column(db.Float, nullable=True)
 
     fg_percentage = db.Column(db.Float, nullable=True)  # Field goal percentage
     three_point_percentage = db.Column(db.Float, nullable=True)  # 3-point percentage
@@ -57,6 +58,7 @@ class PostSeason(db.Model):
     assists = db.Column(db.Float, nullable=False)
     steals = db.Column(db.Float, nullable=True)
     blocks = db.Column(db.Float, nullable=True)
+    minutes = db.Column(db.Float, nullable=True)
 
     fg_percentage = db.Column(db.Float, nullable=True)  # Field goal percentage
     three_point_percentage = db.Column(db.Float, nullable=True)  # 3-point percentage
@@ -93,6 +95,8 @@ class MasterPlayer(db.Model):
     steals = db.Column(db.Float, nullable=True)
     blocks = db.Column(db.Float, nullable=True)
     turnovers = db.Column(db.Float, nullable=True)
+    minutes = db.Column(db.Float, nullable=True)
+
 
     fg_percentage = db.Column(db.Float, nullable=True)
     three_point_percentage = db.Column(db.Float, nullable=True)

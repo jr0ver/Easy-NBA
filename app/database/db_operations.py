@@ -43,7 +43,8 @@ def add_regular_season_stats(player_id: int, reg) -> None:
             fg_percentage=(reg.iloc[index]['FG%']),  # Parse percentage
             three_point_percentage=(reg.iloc[index]['3P%']),
             ft_percentage=(reg.iloc[index]['FT%']),
-            turnovers=reg.iloc[index]['TOV']
+            turnovers=reg.iloc[index]['TOV'],
+            minutes=(reg.iloc[index]['MP'])
         )
         db.session.add(reg_season_entry)
 
@@ -65,7 +66,9 @@ def add_post_season_stats(player_id: int, playoffs) -> None:
             fg_percentage=(playoffs.iloc[index]['FG%']),  # Parse percentage
             three_point_percentage=(playoffs.iloc[index]['3P%']),
             ft_percentage=(playoffs.iloc[index]['FT%']),
-            turnovers=playoffs.iloc[index]['TOV']
+            turnovers=playoffs.iloc[index]['TOV'],
+            minutes=(playoffs.iloc[index]['MP'])
+
         )
         db.session.add(post_season_entry)
 
@@ -149,7 +152,8 @@ def convert_reg_to_df(reg_query):
             'FG%': season.fg_percentage,
             'FT%': season.ft_percentage,
             '3P%': season.three_point_percentage,
-            'TOV': season.turnovers
+            'TOV': season.turnovers,
+            'MP': season.minutes
         } for season in reg_query]
 
         reg_df = pd.DataFrame(reg_data)
@@ -183,7 +187,8 @@ def convert_post_to_df(playoffs_query):
                 'FG%': playoff.fg_percentage,
                 'FT%': playoff.ft_percentage,
                 '3P%': playoff.three_point_percentage,
-                'TOV': playoff.turnovers
+                'TOV': playoff.turnovers,
+                'MP': playoff.minutes
                  # currently set to None for incomplete data, fix later
             } for playoff in playoffs_query]
 
@@ -285,6 +290,7 @@ def update_master_player(player_id, reg_stats):
         master_player.fg_percentage = reg_stats_row['FG%']
         master_player.three_point_percentage = reg_stats_row['3P%']
         master_player.free_throw_percentage = reg_stats_row['FT%']
+        master_player.minutes = reg_stats_row['MP']
 
         print("updated master table")
         db.session.commit()
@@ -303,7 +309,8 @@ def update_master_player(player_id, reg_stats):
             turnovers=reg_stats_row['TOV'],
             fg_percentage=reg_stats_row['FG%'],
             three_point_percentage=reg_stats_row['3P%'],
-            free_throw_percentage=reg_stats_row['FT%']
+            free_throw_percentage=reg_stats_row['FT%'],
+            minutes=reg_stats_row['MP']
         )
         print("appended to master table")
 
