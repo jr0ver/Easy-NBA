@@ -1,3 +1,52 @@
 .pair{
     width: 50%;
 }
+
+.frame{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.sides{
+    padding: 2em 2em;
+    gap: 2.5em;
+}
+.closest-box{
+    flex: 1;
+}
+
+.info{
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+}
+
+.info p{
+    font-size: larger;
+    font-weight: bold;
+}
+.player-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 600px;
+}
+
+.player-item {
+    padding: 5px 0;
+    text-align: center;
+    flex: 1 1 calc(50% - 10px);
+    box-sizing: border-box;
+}
+
+.top-ten:hover{
+    font-weight: bold;
+    color: goldenrod;
+}
+
+@media (max-width: 600px) {
+    .player-item {
+        flex: 1 1 100%;
+    }
+}

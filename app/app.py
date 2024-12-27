@@ -87,9 +87,26 @@ def compare():
                            df2=comp_df2.to_html(classes="data") if comp_df2 is not None else None)
 
 
-@app.route('/visualize')
+@app.route('/visualize', methods=['GET', 'POST'])
 def visualize():
-    return render_template('visualize.html')
+    player_info = player_obj = closest_players = None
+    
+    if request.method == "POST":
+        user_input = request.form.get("player", "").title()
+        received_data = handle_player_data(user_input)
 
+        if received_data:
+            player_obj, player_info = received_data[0], received_data[3]
+            
+            if player_obj:
+                closest_players = handle_closest_player(player_obj.id, 25)
+                # closest_players = "Oops! There has been an error calculating the closest player."
+
+    return render_template(
+        "visualize.html",
+        player_id=player_obj.id if player_obj is not None else None,
+        player_info=player_info,
+        closest_players=closest_players
+    )
 with app.app_context():
     db.create_all()

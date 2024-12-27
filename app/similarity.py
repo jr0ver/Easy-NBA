@@ -106,11 +106,11 @@ def scale_data(df):
     return df
 
 
-def closest_player_KNN(scaled_df, player_id):
-    """Use KNN to find the most similar player"""
+def closest_players_KNN(scaled_df, player_id, num_players):
+    """Use KNN to find the most similar players"""
     # extract player data (excluding the 'Player_ID' and 'Pos')
     KNN_N = 5
-    NUM_PLAYERS = 3
+    if num_players > 4: KNN_N = num_players + 1
 
     features = scaled_df[FEATS]
 
@@ -123,21 +123,21 @@ def closest_player_KNN(scaled_df, player_id):
     distances, indices = knn.kneighbors(player_vector)
 
     # distances[0] is list of all players (including self)
-    similarity_scores = 1 / (1 + distances[0][1:NUM_PLAYERS + 1])
+    similarity_scores = 1 / (1 + distances[0][1:num_players + 1])
 
     # get the closest players' data
-    closest_players_index = indices[0][1:NUM_PLAYERS + 1]
+    closest_players_index = indices[0][1:num_players + 1]
     closest_players = scaled_df.iloc[closest_players_index]['Player_ID']
 
     return closest_players, similarity_scores
 
-def get_closest_player(id: int) -> str:
+def get_closest_player(id: int, num_players=3) -> str:
     """Returns the closest player by calling other functions"""
     try:
         scaled = scale_data(create_master_table2())
         # scaled = scale_data(create_master_table())
         
-        closest_ids, scores = closest_player_KNN(scaled, id)
+        closest_ids, scores = closest_players_KNN(scaled, id, num_players)
         closest_names = [get_player_name(player_id) for player_id in closest_ids]
         
         print(scores)
@@ -150,6 +150,8 @@ def get_closest_player(id: int) -> str:
     except Exception as e:
         print(f"Unexpected error: {e}")
         return "Oops! An unexpected issue occurred"
+
+
 
 def sigmoid(x, k=10, c=0.30):
     return 1 / (1 + np.exp(-k * (x - c)))
@@ -164,7 +166,6 @@ def get_similarity_score(pid1, pid2):
     p2_vector = p2_row[FEATS].values
 
     distance = np.linalg.norm(p1_vector - p2_vector)
-
     similarity_score = sigmoid(1 / (1 + distance))
     
     return similarity_score

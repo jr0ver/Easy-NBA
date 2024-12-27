@@ -56,10 +56,10 @@ def handle_player_data(user_input) -> tuple:
     return player_obj, reg, playoffs, player_info
 
 
-def handle_closest_player(id: int) -> str:
+def handle_closest_player(id: int, num_players=3) -> str:
     if id is None:
         return None
-    closest_players, scores = get_closest_player(id)
+    closest_players, scores = get_closest_player(id, num_players)
     return closest_players
 
 
