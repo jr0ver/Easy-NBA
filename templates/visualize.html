@@ -31,7 +31,7 @@
                 </div>
                 <div class="closest-box">
                     <div class="info">
-                        <p>Ordered List of Closest Players</p>
+                        <p class="list-title">Ordered List of Closest Players</p>
                         <br>
                         <div class="player-list">
 
@@ -48,9 +48,12 @@
 
 
         <div class="stats-head">
-            <h2>Career Stats Comparison</h2>
+            <h2>KMeans Cluster: {{cluster}}</h2>
         </div>
 
+        <div class="scatterplot">
+            <iframe class='boxify' src="{{ url_for('static', filename='img/scatterplot.html') }}" width="100%" height="500px"></iframe>
+        </div>
 
         {% else %}
         <p>One or both players not found, please try again.</p>

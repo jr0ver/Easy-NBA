@@ -22,10 +22,11 @@
     align-items: center;
 }
 
-.info p{
+.list-title{
     font-size: larger;
     font-weight: bold;
 }
+
 .player-list {
     display: flex;
     flex-wrap: wrap;
@@ -49,4 +50,17 @@
     .player-item {
         flex: 1 1 100%;
     }
+}
+
+.scatterplot{
+    width: 80%;
+}
+
+.scatterplot iframe {
+    border: none;
+    width: 100%;
+    height: 500px;
+    max-width: 800px;
+    margin: 0 auto;
+    display: block;
 }
