@@ -15,11 +15,11 @@
         <script src="{{ url_for('static', filename='js/stats.js') }}"></script>
         <script src="{{ url_for('static', filename='js/delete.js') }}"></script>
         <script src="{{ url_for('static', filename='js/modal.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     {% elif request.endpoint == 'visualize' %}
         <link rel="stylesheet" href="{{ url_for('static', filename='styles/visualize.css') }}" />
         <link rel="stylesheet" href="{{ url_for('static', filename='styles/modal.css') }}" />
         <script src="{{ url_for('static', filename='js/modal.js') }}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     {% endif %}
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.4/lottie.min.js"></script>

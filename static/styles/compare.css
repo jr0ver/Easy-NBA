@@ -44,7 +44,7 @@ input[type="text"] {
     flex-direction: row;
     margin-bottom: 0.25em;
     flex-direction: column;
-    border-radius: inherit;
+    border-radius: 0 0 1em 1em;
 }
 
 .bar-section {
