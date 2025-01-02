@@ -3,10 +3,14 @@ Module contains machine learning functions to determine
 similarity. Hosts a KNN model to find closest players.
 """
 
+import os
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import NearestNeighbors
+from sklearn.cluster import KMeans
 import pandas as pd
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 from .database.db_operations import get_player_info, get_player_name, query_all_master_table, query_all_players
 
@@ -54,7 +58,6 @@ def create_master_table():
     
     df = pd.DataFrame(player_data)
     return df
-
 # slightly more optimized
 def create_master_table2():
     master_players = query_all_master_table()
@@ -131,6 +134,7 @@ def closest_players_KNN(scaled_df, player_id, num_players):
 
     return closest_players, similarity_scores
 
+
 def get_closest_player(id: int, num_players=3) -> str:
     """Returns the closest player by calling other functions"""
     try:
@@ -140,7 +144,7 @@ def get_closest_player(id: int, num_players=3) -> str:
         closest_ids, scores = closest_players_KNN(scaled, id, num_players)
         closest_names = [get_player_name(player_id) for player_id in closest_ids]
         
-        print(scores)
+        # print(scores)
         return closest_names, scores
     
     # sometimes KNN function returns value error, fix later
@@ -152,11 +156,11 @@ def get_closest_player(id: int, num_players=3) -> str:
         return "Oops! An unexpected issue occurred"
 
 
-
 def sigmoid(x, k=10, c=0.30):
     return 1 / (1 + np.exp(-k * (x - c)))
 
-def get_similarity_score(pid1, pid2):
+
+def get_similarity_score(pid1: int, pid2: int) -> int:
     scaled_df = scale_data(create_master_table2())
 
     p1_row = scaled_df[scaled_df['Player_ID'] == pid1]
@@ -170,3 +174,43 @@ def get_similarity_score(pid1, pid2):
     
     return similarity_score
 
+import plotly.express as px
+
+
+def get_kmeans_cluster(pid: int) -> int:
+    df = create_master_table2()
+    pid_col = df['Player_ID']
+
+    feats = df.drop(['Player_ID'], axis=1)
+
+    scaler = StandardScaler()
+    df_scaled = scaler.fit_transform(feats)
+
+    kmeans = KMeans(n_clusters=4)
+
+    feats['Player_ID'] = pid_col
+    feats['Cluster'] = kmeans.fit_predict(df_scaled)
+    feats['Name'] = feats['Player_ID'].apply(lambda x: get_player_name(x))
+
+    # sns.scatterplot(data=feats, x='PTS', y='AST', hue='cluster', palette='deep')
+    # plt.savefig('static/img/scatterplot.png')
+    # plt.close()
+    
+    generate_plotly(feats)
+
+    # cluster_map = {0: 'Ball Handler/Scorer', 1: 'Role PLayer',
+    #                 2: 'Barely Played', 3: 'Big Man'}
+    cluster_num = int(feats[feats['Player_ID']==pid]['Cluster'].values[0])
+    
+    return cluster_num
+
+
+def generate_plotly(feats: int) -> None:
+    fig = px.scatter(feats, x='PTS', y='AST', color='Cluster', hover_data=['TRB','Name'])
+    fig.write_html('static/img/scatterplot.html')
+
+    output_dir = 'static/img'
+    os.makedirs(output_dir, exist_ok=True)
+
+    output_file = os.path.join(output_dir, 'scatterplot.html')
+    fig.write_html(output_file)

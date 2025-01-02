@@ -7,6 +7,8 @@ import os
 from flask import Flask, jsonify, redirect, request, render_template, url_for
 from flask_migrate import Migrate
 
+from app.similarity import get_kmeans_cluster
+
 # asbtraction
 from .handler import handle_closest_player, handle_comp_dict, handle_comparison, handle_deletion_status, handle_player_data
 from .models.TableModels import db
@@ -89,7 +91,7 @@ def compare():
 
 @app.route('/visualize', methods=['GET', 'POST'])
 def visualize():
-    player_info = player_obj = closest_players = None
+    player_info = player_obj = closest_players = cluster = None
     
     if request.method == "POST":
         user_input = request.form.get("player", "").title()
@@ -100,13 +102,14 @@ def visualize():
             
             if player_obj:
                 closest_players = handle_closest_player(player_obj.id, 25)
-                # closest_players = "Oops! There has been an error calculating the closest player."
+                cluster = get_kmeans_cluster(player_obj.id)
 
     return render_template(
         "visualize.html",
         player_id=player_obj.id if player_obj is not None else None,
         player_info=player_info,
-        closest_players=closest_players
+        closest_players=closest_players,
+        cluster=cluster
     )
 with app.app_context():
     db.create_all()

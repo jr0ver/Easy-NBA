@@ -31,7 +31,7 @@
                 </div>
                 <div class="closest-box">
                     <div class="info">
-                        <p>Ordered List of Closest Players</p>
+                        <p class="list-title">Ordered List of Closest Players</p>
                         <br>
                         <div class="player-list">
 
@@ -48,9 +48,28 @@
 
 
         <div class="stats-head">
-            <h2>Career Stats Comparison</h2>
+            <h2>KMeans Cluster: {{cluster}}</h2>
+            <p id="infoText" class="info-text">KMeans Clustering Categories*</p>
         </div>
 
+        <div id="infoModal" class="modal boxify">
+            <div class="modal-content boxify">
+                <h2 class="modal-header">KMeans Algortihm Categories</h2>
+                <p>The clustering algorithm below aims to group players based on their similar statistics
+                    and careers. Although the algorithm is not perfect, the general categories are as follows:
+                    
+                    <span class="cat-list">0: Ball Handler/Scorer, 1: Role Player, 2: Barely Played, 3: Big Man</span>
+
+                    Sometimes the numbers correspond to different categories, but the actual category names remain the same.
+                    Hover over the points below to accurately understand the grouping.
+                </p>
+                <span class="close-btn">&times;</span>
+            </div>
+        </div>
+
+        <div class="scatterplot">
+            <iframe class='boxify' src="{{ url_for('static', filename='img/scatterplot.html') }}" width="100%" height="500px"></iframe>
+        </div>
 
         {% else %}
         <p>One or both players not found, please try again.</p>
