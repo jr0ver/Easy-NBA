@@ -60,6 +60,8 @@ def handle_closest_player(id: int, num_players=3) -> str:
     if id is None:
         return None
     closest_players, scores = get_closest_player(id, num_players)
+    if len(closest_players) == 0:
+        return ['Oops! No similar player found :(']
     return closest_players
 
 

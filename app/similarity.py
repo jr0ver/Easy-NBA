@@ -144,16 +144,15 @@ def get_closest_player(id: int, num_players=3) -> str:
         closest_ids, scores = closest_players_KNN(scaled, id, num_players)
         closest_names = [get_player_name(player_id) for player_id in closest_ids]
         
-        # print(scores)
         return closest_names, scores
     
     # sometimes KNN function returns value error, fix later
     except ValueError as e:
         print(f"ValueError: {e}")
-        return "Oops! The system couldn't find a player due to a value error"
+        return [], []
     except Exception as e:
         print(f"Unexpected error: {e}")
-        return "Oops! An unexpected issue occurred"
+        return [], []
 
 
 def sigmoid(x, k=10, c=0.30):
@@ -176,33 +175,30 @@ def get_similarity_score(pid1: int, pid2: int) -> int:
 
 import plotly.express as px
 
-
 def get_kmeans_cluster(pid: int) -> int:
-    df = create_master_table2()
-    pid_col = df['Player_ID']
+    try:
+        df = create_master_table2()
+        pid_col = df['Player_ID']
 
-    feats = df.drop(['Player_ID'], axis=1)
+        feats = df.drop(['Player_ID'], axis=1)
 
-    scaler = StandardScaler()
-    df_scaled = scaler.fit_transform(feats)
+        scaler = StandardScaler()
+        df_scaled = scaler.fit_transform(feats)
 
-    kmeans = KMeans(n_clusters=4)
+        kmeans = KMeans(n_clusters=4)
 
-    feats['Player_ID'] = pid_col
-    feats['Cluster'] = kmeans.fit_predict(df_scaled)
-    feats['Name'] = feats['Player_ID'].apply(lambda x: get_player_name(x))
+        feats['Player_ID'] = pid_col
+        feats['Cluster'] = kmeans.fit_predict(df_scaled)
+        feats['Name'] = feats['Player_ID'].apply(lambda x: get_player_name(x))
 
-    # sns.scatterplot(data=feats, x='PTS', y='AST', hue='cluster', palette='deep')
-    # plt.savefig('static/img/scatterplot.png')
-    # plt.close()
-    
-    generate_plotly(feats)
+        generate_plotly(feats)
 
-    # cluster_map = {0: 'Ball Handler/Scorer', 1: 'Role PLayer',
-    #                 2: 'Barely Played', 3: 'Big Man'}
-    cluster_num = int(feats[feats['Player_ID']==pid]['Cluster'].values[0])
-    
-    return cluster_num
+        cluster_num = int(feats[feats['Player_ID'] == pid]['Cluster'].values[0])
+        return cluster_num
+
+    except Exception as e:
+        print(f"Error in get_kmeans_cluster: {e}")
+        return -1  # Return a default value or handle it as needed
 
 
 def generate_plotly(feats: int) -> None:
