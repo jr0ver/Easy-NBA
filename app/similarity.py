@@ -159,7 +159,8 @@ def get_closest_player(id: int, num_players=3) -> str:
 def sigmoid(x, k=10, c=0.30):
     return 1 / (1 + np.exp(-k * (x - c)))
 
-def get_similarity_score(pid1, pid2):
+
+def get_similarity_score(pid1: int, pid2: int) -> int:
     scaled_df = scale_data(create_master_table2())
 
     p1_row = scaled_df[scaled_df['Player_ID'] == pid1]
@@ -175,7 +176,8 @@ def get_similarity_score(pid1, pid2):
 
 import plotly.express as px
 
-def get_kmeans_cluster(pid):
+
+def get_kmeans_cluster(pid: int) -> int:
     df = create_master_table2()
     pid_col = df['Player_ID']
 
@@ -196,9 +198,14 @@ def get_kmeans_cluster(pid):
     
     generate_plotly(feats)
 
-    return feats[feats['Player_ID']==pid]['Cluster'].values[0]
+    # cluster_map = {0: 'Ball Handler/Scorer', 1: 'Role PLayer',
+    #                 2: 'Barely Played', 3: 'Big Man'}
+    cluster_num = int(feats[feats['Player_ID']==pid]['Cluster'].values[0])
+    
+    return cluster_num
 
-def generate_plotly(feats):
+
+def generate_plotly(feats: int) -> None:
     fig = px.scatter(feats, x='PTS', y='AST', color='Cluster', hover_data=['TRB','Name'])
     fig.write_html('static/img/scatterplot.html')
 

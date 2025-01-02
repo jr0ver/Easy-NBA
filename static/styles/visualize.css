@@ -1,28 +1,29 @@
-.pair{
+.pair {
     width: 50%;
 }
 
-.frame{
+.frame {
     display: flex;
     flex-direction: column;
     gap: 1em;
 }
 
-.sides{
+.sides {
     padding: 2em 2em;
     gap: 2.5em;
 }
-.closest-box{
+
+.closest-box {
     flex: 1;
 }
 
-.info{
+.info {
     min-width: 100px;
     display: flex;
     align-items: center;
 }
 
-.list-title{
+.list-title {
     font-size: larger;
     font-weight: bold;
 }
@@ -41,7 +42,7 @@
     box-sizing: border-box;
 }
 
-.top-ten:hover{
+.top-ten:hover {
     font-weight: bold;
     color: goldenrod;
 }
@@ -52,7 +53,7 @@
     }
 }
 
-.scatterplot{
+.scatterplot {
     width: 80%;
 }
 
@@ -62,5 +63,20 @@
     height: 500px;
     max-width: 800px;
     margin: 0 auto;
+    display: block;
+}
+
+.stats-head h2 {
+    margin-bottom: 0;
+}
+
+.stats-head p {
+    color: black;
+    font-weight: normal;
+    margin: 0 0 1em 0;
+}
+
+.cat-list{
+    margin: 0.75em;
     display: block;
 }
