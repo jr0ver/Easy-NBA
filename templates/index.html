@@ -47,8 +47,8 @@
             <h2>Post-Season Stats</h2>
         </div>
         <div class="scroll center last">{{ playoffs | safe }}</div>
-        {% else %}
-        <p>player not found, sorry!</p>
+        {% elif request.method == "POST" %}
+        <p>Sorry, that player couldn't be found :(</p>
         {% endif %}
     </div>
 {% endblock %}

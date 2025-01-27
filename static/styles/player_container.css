@@ -106,7 +106,13 @@
     /* Slightly increase size on hover */
 }
 
-.test-btn{
+@media (max-width: 600px) {
+    .awards {
+        gap: 0.1em;
+    }
+}
+
+.test-btn {
     background-color: #133f79;
     color: white;
     margin: 2px 2px;

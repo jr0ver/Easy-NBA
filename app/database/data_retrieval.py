@@ -6,7 +6,12 @@ a PlayerInfo object.
 import pandas as pd
 from bs4 import BeautifulSoup
 from ..models.BasketballReference import BasketballReference
-from ..awards import format_all_league, get_all_league_list, get_awards_list, seperate_all_league
+from ..awards import (
+    format_all_league,
+    get_all_league_list,
+    get_awards_list,
+    seperate_all_league,
+)
 from ..data_cleaning import clean_table
 
 
@@ -23,10 +28,10 @@ class PlayerInfo:
     def get_teams(self):
         relevant_rows = self.reg.iloc[: self.reg.index.get_loc("TOT_1")]
         teams = relevant_rows["Team"].value_counts().index.tolist()
-
-        if len(teams) > 3:
-            return teams[:3]
-        return teams
+        filtered_teams = [team for team in teams if team not in ["2TM", "3TM", "-"]]
+        if len(filtered_teams) > 3:
+            return filtered_teams[:3]
+        return filtered_teams
 
     def get_position(self):
         relevant_rows = self.reg.iloc[: self.reg.index.get_loc("TOT_1")]
@@ -37,7 +42,7 @@ class PlayerInfo:
         if len(positions) > 1 and positions.iloc[1] >= positions.iloc[0] * 0.33:
             return [top_position, positions.index[1]]
         return [top_position]
-    
+
     def get_player_info(self) -> dict[str]:
         """arranges the player_info dictionary for the app_route"""
 
@@ -53,6 +58,6 @@ class PlayerInfo:
             "img_link": self.player_ref.get_br_img(),
             "position": self.get_position(),
             "teams": self.get_teams(),
-            "awards": awards
+            "awards": awards,
         }
         return player_info

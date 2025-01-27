@@ -99,8 +99,8 @@
         <h3>{{ player2_info['player_name'] }}</h3>
         <div class="scroll center">{{ df2 | safe }}</div>
 
-        {% else %}
-        <p>One or both players not found, please try again.</p>
+        {% elif request.method == "POST" %}
+        <p>Sorry, one or both of those players couldn't be found :(</p>
         {% endif %}
     </div>
 {% endblock %}
