@@ -73,6 +73,7 @@ def handle_deletion_status(id: int) -> list[str, bool]:
 def handle_comparison(p1: str, p2: str) -> dict:
     p1_info, p2_info = {}, {}
     comp_df1, comp_df2 = None, None
+    score = 0
 
     p1_recv = handle_player_data(p1)
     p2_recv = handle_player_data(p2)
