@@ -7,10 +7,8 @@ import os
 from flask import Flask, jsonify, redirect, request, render_template, url_for
 from flask_migrate import Migrate
 
-from app.similarity import get_kmeans_cluster
-
 # asbtraction
-from .handler import handle_closest_player, handle_comp_dict, handle_comparison, handle_deletion_status, handle_player_data
+from .handler import handle_closest_player, handle_comp_dict, handle_comparison, handle_deletion_status, handle_kmeans, handle_player_data
 from .models.TableModels import db
 
 app = Flask(__name__, template_folder="../templates", static_folder="../static")
@@ -102,7 +100,7 @@ def visualize():
             
             if player_obj:
                 closest_players = handle_closest_player(player_obj.id, 25)
-                cluster = get_kmeans_cluster(player_obj.id)
+                cluster = handle_kmeans(player_obj.id)
 
     return render_template(
         "visualize.html",
