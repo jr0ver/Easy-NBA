@@ -1,5 +1,4 @@
 input[type="text"] {
-    min-width: 150px;
     margin-bottom: 1em;
 }
 
@@ -154,5 +153,11 @@ input[type="text"] {
 @media (max-width: 410px) {
     .download-btn {
         position: relative;
+    }
+}
+
+@media (max-width: 600px) {
+    form {
+        width: 80%;
     }
 }

@@ -142,6 +142,24 @@ h1 {
     font-family: Poppins;
     font-weight: bold;
     color: #133f79;
+    position: relative;
+    /* Required for ::before positioning */
+}
+
+h1::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    bottom: 0px;
+    left: 50%;
+    background-color: #133f79;
+    transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+h1:hover::before {
+    width: 100%;
+    left: 0;
 }
 
 h3 {
@@ -151,8 +169,10 @@ h3 {
 }
 
 .intro {
-    padding: 0 4em;
+    padding: 1em;
     max-width: 900px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 1em;
 }
 
 .content p {

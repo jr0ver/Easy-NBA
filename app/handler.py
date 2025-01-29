@@ -12,7 +12,7 @@ from .data_cleaning import front_end_clean
 from .database.db_operations import add_player, convert_reg_to_df, convert_post_to_df, delete_player_from_id, get_player_info, get_player_name, get_player_object, get_player_tables, update_master_player
 from .models.BasketballReference import BasketballReference
 from .database.data_retrieval import PlayerInfo
-from .similarity import get_closest_player, get_similarity_score
+from .similarity import get_closest_player, get_kmeans_cluster, get_similarity_score
 
 
 def handle_player_data(user_input) -> tuple:
@@ -108,3 +108,6 @@ def handle_comp_dict(comp_df1: pd.DataFrame, comp_df2: pd.DataFrame) -> tuple[di
     if comp_df1 is None or comp_df2 is None:
          return {}, {}
     return create_comp_dict(comp_df1, comp_df2)
+
+def handle_kmeans(id: int) -> int:
+    return get_kmeans_cluster(id)

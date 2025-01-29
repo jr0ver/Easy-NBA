@@ -9,7 +9,7 @@ form {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    column-gap: 1em;
+    column-gap: 0.4em;
     row-gap: 0.3em;
 }
 
