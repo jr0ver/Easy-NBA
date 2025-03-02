@@ -11,9 +11,12 @@ from flask_migrate import Migrate
 from .handler import handle_closest_player, handle_comp_dict, handle_comparison, handle_deletion_status, handle_kmeans, handle_player_data
 from .models.TableModels import db
 
+import pymysql
+pymysql.install_as_MySQLdb()
+
 app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URI_MYSQL')
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('MYSQL_DB_URI')
 db.init_app(app)
 migrate = Migrate(app, db)
 
