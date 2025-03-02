@@ -4,6 +4,8 @@ also contains major app_routes such as the home and delete app route.
 """
 
 import os
+import pymysql
+
 from flask import Flask, jsonify, redirect, request, render_template, url_for
 from flask_migrate import Migrate
 
@@ -11,23 +13,22 @@ from flask_migrate import Migrate
 from .handler import handle_closest_player, handle_comp_dict, handle_comparison, handle_deletion_status, handle_kmeans, handle_player_data
 from .models.TableModels import db
 
-import pymysql
+
 pymysql.install_as_MySQLdb()
 
 app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('MYSQL_DB_URI')
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("MYSQL_DB_URI")
 db.init_app(app)
 migrate = Migrate(app, db)
-
 
 # will need sessions later to keep data across pages
 
 @app.route("/", methods=["GET", "POST"])
 def home():
     reg = playoffs = player_info = user_input = player_obj = closest_player = None
-    reset_name = request.args.get('reset') # if app route is redirected by home
-    
+    reset_name = request.args.get("reset")  # if app route is redirected by home
+
     if request.method == "POST" or reset_name:
         if reset_name:
             user_input = reset_name
@@ -38,12 +39,11 @@ def home():
 
         if received_data:
             player_obj, reg, playoffs, player_info = received_data
-            
+
             if player_obj:
                 closest_player = handle_closest_player(player_obj.id)
                 # closest_player = "Oops! There has been an error calculating the closest player."
 
-    
     return render_template(
         "index.html",
         player_id=player_obj.id if player_obj is not None else None,
@@ -53,54 +53,57 @@ def home():
         closest_player=closest_player,
     )
 
-@app.route('/delete_player', methods=['POST'])
+
+@app.route("/delete_player", methods=["POST"])
 def delete_player():
     data = request.get_json()  # extracts JSON data from the JS
-    player_id = data.get('player_id')  # retrieves player_id from the JSON data
-    
+    player_id = data.get("player_id")  # retrieves player_id from the JSON data
+
     p_name, deleted = handle_deletion_status(player_id)
 
     # performs deletion
     if deleted:
         return redirect(url_for('home', reset=p_name,))
     else:
-        return jsonify({'error': 'Player could not be found or deleted'})
-    
+        return jsonify({"error": "Player could not be found or deleted"})
 
-@app.route('/compare', methods=['GET', 'POST'])
+
+@app.route("/compare", methods=["GET", "POST"])
 def compare():
     player1_info, player2_info, player1_stats, player2_stats = {}, {}, {}, {}
     comp_df1, comp_df2 = None, None
     score = 0
 
     if request.method == "POST":
-        player1 = request.form.get('player1')
-        player2 = request.form.get('player2')
+        player1 = request.form.get("player1")
+        player2 = request.form.get("player2")
 
         player1_info, player2_info, comp_df1, comp_df2, score = handle_comparison(player1, player2)
         player1_stats, player2_stats = handle_comp_dict(comp_df1, comp_df2) # change to handler later
 
-    return render_template("compare.html",
-                           score=score,
-                           player1_info=player1_info,
-                           player2_info=player2_info,
-                           player1_stats=player1_stats,
-                           player2_stats=player2_stats,
-                           df1=comp_df1.to_html(classes="data") if comp_df1 is not None else None,
-                           df2=comp_df2.to_html(classes="data") if comp_df2 is not None else None)
+    return render_template(
+        "compare.html",
+        score=score,
+        player1_info=player1_info,
+        player2_info=player2_info,
+        player1_stats=player1_stats,
+        player2_stats=player2_stats,
+        df1=comp_df1.to_html(classes="data") if comp_df1 is not None else None,
+        df2=comp_df2.to_html(classes="data") if comp_df2 is not None else None,
+    )
 
 
-@app.route('/visualize', methods=['GET', 'POST'])
+@app.route("/visualize", methods=["GET", "POST"])
 def visualize():
     player_info = player_obj = closest_players = cluster = None
-    
+
     if request.method == "POST":
         user_input = request.form.get("player", "").title()
         received_data = handle_player_data(user_input)
 
         if received_data:
             player_obj, player_info = received_data[0], received_data[3]
-            
+
             if player_obj:
                 closest_players = handle_closest_player(player_obj.id, 25)
                 cluster = handle_kmeans(player_obj.id)
@@ -110,7 +113,9 @@ def visualize():
         player_id=player_obj.id if player_obj is not None else None,
         player_info=player_info,
         closest_players=closest_players,
-        cluster=cluster
+        cluster=cluster,
     )
+
+
 with app.app_context():
     db.create_all()
