@@ -4,6 +4,24 @@
 
 **Easy-NBA** is feature-heavy as mentioned above, but has a wide range of future advancements due to the many possibilities of the custom dataset. With some clean up tasks to go, **Easy-NBA** will soon be ready for deployment!
 
+## Deployment/Installation
+
+#### Option 1: Visit Deployment
+
+**NEW!** Easy-NBA is finally available online through Render!
+
+Visit [easy-nba.onrender.com](https://easy-nba.onrender.com/visualize) to get the full experience!
+Note: currently the Render server may be offline, so please await future improvements
+
+#### Option 2: Installing through Git (IPR)
+
+Currently, the DB is not situated for offline use, but the .sql file will be available soon.
+To clone the repository you can run ```run.py``` after cloning via:
+    
+```
+git clone https://github.com/zsspan/Easy-NBA
+```
+   
 ## Features and Usage
 - (to be listed soon with images)
 
@@ -13,23 +31,6 @@
 - **Data Handling/Visualization**: Jupyter, Pandas, BeautifulSoup, Seaborn, Plotly
 - **Database**: MySQL, SQLite
 - **Machine Learning**: Scikit-learn
-
-## Deployment/Installation
-
-#### Option 1: Visit Deployment
-
-- Awaiting future hosting and deployment -
-
-#### Option 2: Installing through Git
-
-1. Clone the repository using Git:
-    ```bash
-    git clone https://github.com/zsspan/Easy-NBA
-    ```
-2. Start the server via (run.py)
-    ```bash
-    python3 run.py
-    ```
 
 ## Data
 
