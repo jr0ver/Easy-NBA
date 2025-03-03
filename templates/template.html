@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="{{ url_for('static', filename='easynba.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}" />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" as="style" onload="this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins&display=swap">
+    </noscript>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/utils.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/table.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/player_container.css') }}" />

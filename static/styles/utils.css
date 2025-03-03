@@ -1,5 +1,4 @@
 form {
-    margin: 1em 0 0 0.5em;
     width: 40%;
     height: fit-content;
     padding: 20px;
@@ -44,10 +43,21 @@ form button:hover {
     text-wrap: wrap;
 }
 
-.round{
+.round {
     border-radius: 1em;
 }
+
 .boxify {
     border-radius: 1em;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 600px) {
+   form{
+    width: 60%;
+    margin-bottom: 2em;
+   }
+   input[type="text"]{
+    min-width: 60%;
+   }
 }
