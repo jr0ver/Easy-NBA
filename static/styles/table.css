@@ -44,7 +44,11 @@
 @media (max-width: 600px) {
     .data th, .data tr {
         text-align: left;
-        padding: 0;
+        padding: 0.1em;
         text-align: center;
+    }
+
+    .data {
+        font-size: small;
     }
 }

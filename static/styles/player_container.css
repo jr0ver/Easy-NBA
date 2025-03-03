@@ -47,7 +47,7 @@
     align-items: center;
     flex-direction: column;
     background-color: white;
-    border-radius: 5%;
+    border-radius: 10px;
 }
 
 .info p {
@@ -88,7 +88,7 @@
 .award {
     background-color: #45aeda;
     color: white;
-    padding: 0px 8px;
+    padding: 2px 8px;
     margin: 1px 1px;
     border-radius: 8px;
     font-size: 12px;
@@ -128,16 +128,20 @@
     .awards {
         gap: 0.2em;
     }
-    .award{
+
+    .award {
         padding: 2px 3px;
     }
-    .award-text{
+
+    .award-text {
         margin: 1px;
     }
-    .player-container{
+
+    .player-container {
         width: 85%;
     }
-    .info{
+
+    .info {
         padding: 0.5em;
     }
 }

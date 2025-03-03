@@ -34,7 +34,7 @@
     align-items: center;
     background-color: #fefefe;
     margin: 5% auto;
-    padding: 1em 3em;
+    padding: 1em 2.5em;
     border: 1px solid #888;
     width: 80%;
     max-width: 600px;
@@ -53,4 +53,13 @@
     justify-content: center;
     position: relative;
     flex-wrap: wrap;
+}
+
+@media screen and (max-width: 600px) {
+    .modal-content {
+        width: 60%;
+    }
+    .modal-header {
+        text-align: center;
+    }
 }
