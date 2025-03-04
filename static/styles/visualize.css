@@ -47,12 +47,6 @@
     color: goldenrod;
 }
 
-@media (max-width: 600px) {
-    .player-item {
-        flex: 1 1 100%;
-    }
-}
-
 .scatterplot {
     width: 80%;
 }
@@ -76,7 +70,22 @@
     margin: 0 0 1em 0;
 }
 
-.cat-list{
+.cat-list {
     margin: 0.75em;
     display: block;
+}
+
+@media (max-width: 600px) {
+    .player-item {
+        flex: 1 1 100%;
+        padding: 0;
+    }
+
+    .scatterplot {
+        width: 95%;
+    }
+
+    .player-list {
+        font-size: 13px;
+    }
 }

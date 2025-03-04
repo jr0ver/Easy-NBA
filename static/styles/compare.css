@@ -167,6 +167,8 @@ input[type="text"] {
 
     .legend-container {
         justify-content: normal;
+        align-items: center;
+        gap: 1em;
     }
 
     .legend-item {
@@ -179,7 +181,8 @@ input[type="text"] {
         gap: 0.6em;
         justify-content: flex-end;
     }
-/* 
+
+    /* 
     .bar-stat {
         min-width: 4em;
     } */
