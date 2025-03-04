@@ -37,8 +37,12 @@ header {
 }
 
 .title {
-    padding-top: 0.5em;
+    padding-top: 0.35em;
     color: white;
+}
+
+.title:hover {
+    cursor: pointer;
 }
 
 nav {
@@ -57,10 +61,10 @@ nav a:hover {
     border-radius: 4px;
 }
 
-
 footer {
     height: 2em;
     display: flex;
+    gap: 0.5em;
     align-items: center;
 }
 
