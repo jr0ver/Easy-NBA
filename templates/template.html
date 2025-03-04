@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="{{ url_for('static', filename='easynba.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}" />
+    <link rel="icon" href="{{ url_for('static', filename='logo/easynba.ico') }}" type="image/x-icon">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" as="style" onload="this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins&display=swap">
+    </noscript>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/utils.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/table.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/player_container.css') }}" />
@@ -32,7 +36,9 @@
     <div id="lottie"></div> <!-- Background Lottie Animation -->
     <div class="body">
         <header>
-            <div class="title">Easy-NBA</div>
+            <div class="title">
+                <img src="{{ url_for('static', filename='logo/easy-nba-alt4.png') }}" width=auto height=40px alt="Easy NBA Logo" />
+            </div>
             <nav>
                 <a href="{{ url_for('home')}}">Home</a>
                 <a href="{{ url_for('compare')}}">Compare</a>
@@ -46,7 +52,10 @@
         </main>
 
         <footer>
-            <p>Made by Zohair Syed - Currently in Development</p>
+            <p>Currently in Development - Made by Zohair Syed</p>
+            <a href="https://github.com/zsspan" target="_blank">
+                <img src="{{ url_for('static', filename='img/github.svg') }}" alt="GitHub" width="auto" height="22" />
+            </a>
         </footer>
     </div>
 </body>

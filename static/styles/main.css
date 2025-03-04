@@ -1,14 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-
 body {
     margin: 0;
     padding: 0;
+    font-family: 'Poppins', Arial;
 }
 
 .body {
     display: flex;
     flex-direction: column;
-    font-family: sans-serif;
     min-height: 100vh;
 }
 
@@ -22,7 +20,6 @@ header, footer {
     background-color: #45aeda;
     color: white;
     padding: 1em;
-    font-family: Poppins;
     font-weight: bold;
     z-index: 2;
 }
@@ -40,7 +37,12 @@ header {
 }
 
 .title {
+    padding-top: 0.35em;
     color: white;
+}
+
+.title:hover {
+    cursor: pointer;
 }
 
 nav {
@@ -51,7 +53,7 @@ nav {
 nav a {
     color: white;
     text-decoration: none;
-    padding: 0.5rem;
+    padding: 0.3em;
 }
 
 nav a:hover {
@@ -59,10 +61,10 @@ nav a:hover {
     border-radius: 4px;
 }
 
-
 footer {
     height: 2em;
     display: flex;
+    gap: 0.5em;
     align-items: center;
 }
 
@@ -74,29 +76,6 @@ main {
     padding: 3em 0;
     background-color: #f2f2f2;
     flex: auto;
-}
-
-@media (max-width: 600px) {
-    main {
-        padding: 1em;
-    }
-
-    nav {
-        gap: 0;
-    }
-
-    header {
-        padding: 1rem 2rem;
-    }
-
-    h1 {
-        font-size: 2em !important;
-        width: 80%;
-    }
-
-    footer {
-        height: 3.5em;
-    }
 }
 
 /* 
@@ -139,7 +118,6 @@ h1 {
     font-size: 3em;
     margin: 0.9em 0 0 0;
     text-align: center;
-    font-family: Poppins;
     font-weight: bold;
     color: #133f79;
     position: relative;
@@ -164,7 +142,6 @@ h1:hover::before {
 
 h3 {
     color: #133f79;
-    font-family: Poppins;
     font-weight: bold;
 }
 
@@ -177,7 +154,6 @@ h3 {
 
 .content p {
     text-align: center;
-    font-family: Poppins;
 }
 
 .scroll {
@@ -198,12 +174,41 @@ h3 {
 }
 
 .stats-head {
+    padding: 0 1em;
     text-align: center;
     background-color: white;
     width: 60%;
     margin: 2em;
     border-radius: 1.5em;
-    font-family: Poppins;
     font-weight: bold;
     color: #133f79;
+}
+
+@media (max-width: 600px) {
+    main {
+        padding: 1em;
+    }
+
+    nav {
+        gap: 0;
+    }
+
+    header {
+        padding: 1rem 2rem;
+        font-size: 15px;
+    }
+
+    h1 {
+        font-size: 2em !important;
+        width: 80%;
+    }
+
+    footer {
+        height: 3em;
+        font-size: 13px;
+    }
+
+    .intro {
+        font-size: 14px;
+    }
 }
