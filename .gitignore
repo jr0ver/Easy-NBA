@@ -2,6 +2,5 @@
 **/__pycache__/
 venv/
 jupyter/.ipynb_checkpoints/
-jupyter/Master Table Visuals.ipynb
-jupyter/NBA Data Test.ipynb
+
 static/img/scatterplot.html
